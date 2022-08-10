@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.2)
+git cmake_minimum_required(VERSION 3.0.2)
 project(chiba_robot_senior_team)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
