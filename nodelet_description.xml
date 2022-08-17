@@ -1,0 +1,9 @@
+<library path="lib/libchiba_robot_senior_team">
+  <class name="chiba_robot_senior_team/controller_node" 
+    type="controller_node::ControllerNode" 
+    base_class_type="nodelet::Nodelet">
+    <description>
+    </description>
+  </class>
+
+</library>

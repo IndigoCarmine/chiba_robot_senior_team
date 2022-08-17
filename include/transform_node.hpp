@@ -24,37 +24,40 @@ namespace transform_node{
 
     //TODO: you should override the transform function to transform the data
     //TODO: you should set topic_name_ in the derived class
+
     template<typename T>
     class TransformNode : public nodelet::Nodelet
     {
-
         protected:
         //set the value of topic_name_ in the derived class
-        string topic_name_;
+        std::string topic_name_;
         //override this function to transform the data
-        can_plugins::Frame transform(const T data);
+        void transform(const T data);
 
-        public:
-        virtual void onInit(){
-            nh_ = getNodeHandle();
-            pnh_ = getPrivateNodeHandle();
-            can_tx_pub_ = nh_.advertise<can_plugins::Frame>("can_tx", 1000);
-            input_ = nh_.subscribe<T>(topic_name_, 1000, &publish, this);
-            NODELET_INFO("can_handler has started.");
-        };
-
+        //use this fuction when you publish.
+        void publish(can_plugins::Frame frame);
+  
         private:
         ros::NodeHandle nh_;
         ros::NodeHandle pnh_;
         ros::Publisher can_tx_pub_;
         ros::Subscriber input_;
 
-
-        void publish(const T data){
-            can_plugins::Frame msg;
-            msg = transform(data);
-            can_tx_pub_.publish(msg);
+        public:
+        virtual void onInit(){
+            nh_ = getNodeHandle();
+            pnh_ = getPrivateNodeHandle();
+            can_tx_pub_ = nh_.advertise<can_plugins::Frame>("can_tx", 1000);
+            input_ = nh_.subscribe<T>(topic_name_, 1000, &callBack, this);
+            NODELET_INFO("can_handler has started.");
         };
+
+        void callBack(const T data){    
+            transform(data);
+        };
+        void publish(can_plugins::Frame frame){
+            can_tx_pub_.publish(frame);
+        }
 
     };
 }// namespace transform_node
