@@ -1,16 +1,9 @@
-/*
- * mr1_can.cpp
- *
- *  Created on: Feb 27, 2019
- *      Author: yuto
- */
-
 #include <ros/ros.h>
 #include <std_msgs/UInt8.h>
 #include <std_msgs/UInt16.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Float64.h>
-#include <std_msgs/String.h>
+#include <std_msgs/Int32.h>
 
 #include <boost/array.hpp>
 
@@ -35,7 +28,7 @@ namespace id_manager_node{
       void canRxCallback(const can_plugins::Frame::ConstPtr &msg);
 
       void TestTxCallback(const std_msgs::UInt8::ConstPtr &msg);
-      void idNameServiceCallback(const std_msgs::String::ConstPtr &msg);
+      void idNameServiceCallback(const std_msgs::Int32::ConstPtr &msg);
       template<typename T>
         void sendData(const uint16_t id, const T data);
 
@@ -53,20 +46,51 @@ namespace id_manager_node{
     pnh = getPrivateNodeHandle();
 
     _can_tx_pub	= _nh.advertise<can_plugins::Frame>("can_tx", 1000);
-    _can_rx_sub	= _nh.subscribe<can_plugins::Frame>("can_rx", 1000, &IDManagerNode::canRxCallback, this);
-    _id_name_service = _nh.advertiseService<std_msgs::String::ConstPtr>("id_name_service",&IDManagerNode::idNameServiceCallback);
+    _can_rx_sub	= _nh.subscribe<can_plugins::Frame>("can_rx", 1000, &IDManagerNode::canRxCallback);
+    _id_name_service = _nh.advertiseService<std_msgs::Int32>("id_name_service",&IDManagerNode::idNameServiceCallback);
     NODELET_INFO("id_manager_node has started.");
 
-    //TODO We should get CAN ID and name.
-    _id_dictionary = {{"test",1}};
   }
 
 
   void IDManagerNode::canRxCallback(const can_plugins::Frame::ConstPtr &msg){
+    NODELET_INFO("can_rx_callback");
+    //TODO
+    NODELET_WARN("I don't know what to do with this message. Sorry.");
+    NODELET_WARN("You should write canRxCallback in IDManagerNode.");
+    //if the data is a id response, set the id to the dictionary
+    if(msg->id == 0x700){
+      std_msgs::Int32 id_msg;
+      id_msg.data = msg->data[0];
+      _nh.setParam("id/"+ msg->id,id_msg.data);
+    }
+  }
 
+  void IDManagerNode::idNameServiceCallback(const std_msgs::Int32::ConstPtr &msg){
+    NODELET_INFO("id_manager_node: id_name_service_callback");
+    NODELET_WARN("I don't know what to do with this message. Sorry.");
+    NODELET_WARN("You should write canRxCallback in IDManagerNode.");
+    switch (msg->data)
+    {
+      case ServiceRequest::UpdateAllID:
+        {
+          //make can_tx message for broadcast
+          can_plugins::Frame frame;
+          frame.id = 0x00;
+          frame.dlc = 0;
+          frame.data = {};
+          _can_tx_pub.publish(frame);
+        }
+      break;
+    
+    default:
+      break;
+    }
   }
-  void IDManagerNode::idNameServiceCallback(const std_msgs::String::ConstPtr &msg ){
-        
-  }
+  
+  enum ServiceRequest{
+    UpdateAllID,
+    getID,
+  };
 }// namespace testnode
 PLUGINLIB_EXPORT_CLASS(id_manager_node::IDManagerNode, nodelet::Nodelet);

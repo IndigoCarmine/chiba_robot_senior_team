@@ -1,17 +1,17 @@
 #include <ros/common.h>
 
-#include "transform_node.hpp"
+#include "can_input_node.hpp"
 #include <geometry_msgs/Twist.h>
 
 #include <nodelet/nodelet.h>
 #include <pluginlib/class_list_macros.h>
 
 namespace actiuaters_transform_node{
-    class ActiatersTransformNode : transform_node::TransformNode<geometry_msgs::Twist>{
+    class ActiatersTransformNode : can_input_node::CanInputNode<geometry_msgs::Twist>{
         public:
         virtual void onInit(){
             topic_name_ = "actuater_parameters";
-            TransformNode::onInit();
+            CanInputNode::onInit();
         };
         private:
         void transform(const geometry_msgs::Twist data){

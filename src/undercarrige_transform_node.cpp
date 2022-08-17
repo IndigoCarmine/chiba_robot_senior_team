@@ -1,6 +1,6 @@
 #include <ros/common.h>
 
-#include "transform_node.hpp"
+#include "can_input_node.hpp"
 #include <geometry_msgs/Vector3.h>
 
 #include <nodelet/nodelet.h>
@@ -10,24 +10,21 @@
 
 
 namespace undercarrige_transform_node{
-    class UndercarrigeTransformNode : transform_node::TransformNode<geometry_msgs::Vector3>{
+    class UndercarrigeTransformNode : can_input_node::CanInputNode<geometry_msgs::Vector3>{
         public:
-        virtual void onInit(){
-            topic_name_ = "undercarrige_velocity";
-            TransformNode::onInit();
-        };
+            void onInit(){
+                topic_name_ = "undercarrige_velocity";
+                CanInputNode::onInit();
+            };
         private:
-
-        void transform(const geometry_msgs::Vector3 data){
-            //TODO 
-            ROS_ASSERT("undercarrige_transform_node::transform is not implemented yet");
-            can_plugins::Frame frame;
-        
-            publish(frame)
-            
-        };
+            void transform(const geometry_msgs::Vector3 data){
+                //TODO 
+                ROS_ASSERT("undercarrige_transform_node::transform is not implemented yet");
+                can_plugins::Frame frame;
+                publish(frame);
+                
+            };
     };
     
 } // namespace undercarrige_transform_node
-
 PLUGINLIB_EXPORT_CLASS(undercarrige_transform_node::UndercarrigeTransformNode, nodelet::Nodelet);
