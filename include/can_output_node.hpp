@@ -12,7 +12,15 @@ namespace can_output_node{
     //TODO: you should override can_output function to transform the data and publish it to an output topic
     //TODO: you should set topic_name_ in the derived class
     template<typename T>
-    class CanOutputNode : nodelet::Nodelet{
+    class CanOutputNode : public nodelet::Nodelet{
+        private:
+            ros::Subscriber can_rx_sub_;
+            ros::Publisher pub_;
+            void callback(const can_plugins::Frame::ConstPtr &data){
+                can_output(data);
+            }
+        protected:
+            virtual void can_output(const can_plugins::Frame::ConstPtr &data);    
         public:
             virtual void onInit(){
                 ros::NodeHandle& nh = getNodeHandle();
@@ -22,18 +30,14 @@ namespace can_output_node{
                     ROS_ASSERT("you should set topic_name_ in the derived class");
                     return;
                 }
-                can_rx_sub_ = nh.subscribe("can_rx", 1000, &CanOutputNode::can_output, this);
+                can_rx_sub_ = nh.subscribe("can_rx", 1000, &CanOutputNode::callback, this);
                 pub_ = nh.advertise<T>(topic_name_, 1000);
-
-            };
+            }
         protected:
             std::string topic_name_;
-            virtual void can_output(can_plugins::Frame data);    
             inline void publish(T msg){
                 pub_.publish(msg);
-            };
-        private:
-            ros::Subscriber can_rx_sub_;
-            ros::Publisher pub_;
+            }
+
     };
 }

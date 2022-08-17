@@ -5,14 +5,13 @@
 namespace status_transform_node{
     class StatusTransformNode : public can_output_node::CanOutputNode<std_msgs::Int32>{
         public:
-            StatusTransformNode(){
+            void onInit()override{
                 topic_name_ = "status";
                 CanOutputNode::onInit();
             }
-
-            void can_output(const std_msgs::Int32::ConstPtr& msg){
+            void can_output(const can_plugins::Frame::ConstPtr &msg)override{
                 //TODO
                 ROS_ASSERT("status_transform_node::can_output is not implemented yet");
-            };
+            }
     };
 }

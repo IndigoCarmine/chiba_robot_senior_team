@@ -21,18 +21,14 @@ namespace id_manager_node{
   class IDManagerNode: public nodelet::Nodelet
   {
     public:
-      virtual void onInit();
+      void onInit();
 
     private:
       void canRxCallback(const can_plugins::Frame::ConstPtr &msg);
-
       void TestTxCallback(const std_msgs::UInt8::ConstPtr &msg);
-      void idNameServiceCallback(const std_msgs::Int32::ConstPtr &msg);
-      template<typename T>
-        void sendData(const uint16_t id, const T data);
+      bool idNameServiceCallback(const std_msgs::Int32::ConstPtr &msg, const std_msgs::Int32::Ptr &res);
 
       ros::NodeHandle _nh;
-      ros::NodeHandle pnh;
       ros::Publisher _can_tx_pub;
       ros::Subscriber _can_rx_sub;
       ros::ServiceServer _id_name_service;
@@ -42,13 +38,12 @@ namespace id_manager_node{
 
   void IDManagerNode::onInit(){
     _nh = getNodeHandle();
-    pnh = getPrivateNodeHandle();
 
     _can_tx_pub	= _nh.advertise<can_plugins::Frame>("can_tx", 1000);
     _can_rx_sub	= _nh.subscribe<can_plugins::Frame>("can_rx", 1000, &IDManagerNode::canRxCallback);
-    _id_name_service = _nh.advertiseService<std_msgs::Int32>("id_name_service",&IDManagerNode::idNameServiceCallback);
+//    _id_name_service = _nh.advertiseService("id_name_service",&IDManagerNode::idNameServiceCallback,this);
+    NODELET_WARN("I cannnot use advertiseService!!!!!!!!!!!");
     NODELET_INFO("id_manager_node has started.");
-
   }
 
 
@@ -69,13 +64,13 @@ namespace id_manager_node{
     getID,
   };
 
-  void IDManagerNode::idNameServiceCallback(const std_msgs::Int32::ConstPtr &msg){
+  bool IDManagerNode::idNameServiceCallback(const std_msgs::Int32::ConstPtr &msg, const std_msgs::Int32::Ptr &res){
     NODELET_INFO("id_manager_node: id_name_service_callback");
     NODELET_WARN("I don't know what to do with this message. Sorry.");
     NODELET_WARN("You should write canRxCallback in IDManagerNode.");
     switch (msg->data)
     {
-      case static_cast<int>(id_manager_node::ServiceRequestMessage::UpdateAllID):
+      case static_cast<int>(ServiceRequestMessage::UpdateAllID):
         {
           //make can_tx message for broadcast
           can_plugins::Frame frame;
@@ -83,14 +78,22 @@ namespace id_manager_node{
           frame.dlc = 0;
           frame.data = {};
           _can_tx_pub.publish(frame);
+
+          //if it can success to broadcast, response with true
+          res->data = 0;
+          return true;
         }
       break;
     
-    default:
-      break;
+      default:
+        {
+          NODELET_WARN("IDManagerNode : get invalid service request message");
+          //if unknown message, response with false
+          res->data = -1;
+          return false;
+        }
+        break;
     }
   }
-  
-
 }// namespace testnode
 PLUGINLIB_EXPORT_CLASS(id_manager_node::IDManagerNode, nodelet::Nodelet);

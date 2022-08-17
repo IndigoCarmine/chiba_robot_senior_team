@@ -8,20 +8,18 @@
 namespace controller_node{
     class ControllerNode : public nodelet::Nodelet{
         private:
-        ros::NodeHandle nh_;
-        ros::NodeHandle pnh_;
         ros::Subscriber joy_sub_;
         ros::Publisher twist_pub_;
         ros::Publisher actuators_pub_;
         public:
-        virtual void onInit(){
-            nh_ = getNodeHandle();
-            pnh_ = getPrivateNodeHandle();
+        void onInit(){
+            ros::NodeHandle& nh_ = getNodeHandle();
+            ros::NodeHandle& pnh_ = getPrivateNodeHandle();
             joy_sub_ = nh_.subscribe("joy", 1000, &ControllerNode::joyCallback, this);
             twist_pub_ = nh_.advertise<geometry_msgs::Twist>("cmd_vel", 1000);
             actuators_pub_ = nh_.advertise<std_msgs::Int32>("actuators", 1000);
             NODELET_INFO("controller_node has started.");
-        };
+        }
         private:
 
         void joyCallback(const sensor_msgs::Joy::ConstPtr& msg){
@@ -43,7 +41,7 @@ namespace controller_node{
 
             //actuators_pub_.publish(something);
 
-        };
+        }
     };
 } // namespace controller_node
 PLUGINLIB_EXPORT_CLASS(controller_node::ControllerNode, nodelet::Nodelet);

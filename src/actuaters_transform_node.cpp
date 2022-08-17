@@ -1,5 +1,3 @@
-#include <ros/common.h>
-
 #include "can_input_node.hpp"
 #include <geometry_msgs/Twist.h>
 
@@ -7,19 +5,19 @@
 #include <pluginlib/class_list_macros.h>
 
 namespace actiuaters_transform_node{
-    class ActiatersTransformNode : can_input_node::CanInputNode<geometry_msgs::Twist>{
+    class ActiatersTransformNode : public can_input_node::CanInputNode<geometry_msgs::Twist, geometry_msgs::Twist::ConstPtr>{
         public:
-        virtual void onInit(){
+        void onInit()override{
             topic_name_ = "actuater_parameters";
             CanInputNode::onInit();
-        };
-        private:
-        void transform(const geometry_msgs::Twist data){
+        }
+        protected:
+        void can_input(const geometry_msgs::Twist::ConstPtr &data)override{
             //TODO
             ROS_ASSERT("actuaters_transform_node::transform is not implemented yet");
             
 
-        };
+        }
     };
 } // namespace undercarrige_transform_node
 
