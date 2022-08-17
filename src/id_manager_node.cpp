@@ -8,7 +8,6 @@
 #include <boost/array.hpp>
 
 #include <can_plugins/Frame.h>
-#include "can_utils.hpp"
 
 #include <stdint.h>
 #include <string>
@@ -65,6 +64,10 @@ namespace id_manager_node{
       _nh.setParam("id/"+ msg->id,id_msg.data);
     }
   }
+  enum class ServiceRequestMessage{
+    UpdateAllID,
+    getID,
+  };
 
   void IDManagerNode::idNameServiceCallback(const std_msgs::Int32::ConstPtr &msg){
     NODELET_INFO("id_manager_node: id_name_service_callback");
@@ -72,7 +75,7 @@ namespace id_manager_node{
     NODELET_WARN("You should write canRxCallback in IDManagerNode.");
     switch (msg->data)
     {
-      case ServiceRequest::UpdateAllID:
+      case static_cast<int>(id_manager_node::ServiceRequestMessage::UpdateAllID):
         {
           //make can_tx message for broadcast
           can_plugins::Frame frame;
@@ -88,9 +91,6 @@ namespace id_manager_node{
     }
   }
   
-  enum ServiceRequest{
-    UpdateAllID,
-    getID,
-  };
+
 }// namespace testnode
 PLUGINLIB_EXPORT_CLASS(id_manager_node::IDManagerNode, nodelet::Nodelet);

@@ -2,6 +2,7 @@
 #include <nodelet/nodelet.h>
 #include <pluginlib/class_list_macros.h>
 #include <can_plugins/Frame.h>
+#include <ros/ros.h>
 
 namespace can_output_node{
     //Base class for can_input nodelet

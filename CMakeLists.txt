@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   pluginlib
   nodelet
+  can_plugins
 )
 
 ## System dependencies are found with CMake's conventions
@@ -119,11 +120,16 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
+  include
 )
 
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
    src/controller_node.cpp
+   src/actuaters_transform_node.cpp
+   src/id_manager_node.cpp
+   src/status_transform_node.cpp
+   src/undercarrige_transform_node.cpp
  )
 
 ## Add cmake target dependencies of the library

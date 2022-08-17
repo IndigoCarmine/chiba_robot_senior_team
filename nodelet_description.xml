@@ -5,5 +5,29 @@
     <description>
     </description>
   </class>
-
+  <class name="chiba_robot_senior_team/actuaters_transform_node" 
+    type="actuaters_transform_node::ActuatersTransformNode" 
+    base_class_type="nodelet::Nodelet">
+    <description>
+    </description>
+  </class>
+    <class name="chiba_robot_senior_team/id_manager_node" 
+    type="id_manager_node::IDManagerNode" 
+    base_class_type="nodelet::Nodelet">
+    <description>
+    </description>
+  </class>
+    <class name="chiba_robot_senior_team/state_manager_node" 
+    type="state_manager_node::StateManagerNode" 
+    base_class_type="nodelet::Nodelet">
+    <description>
+    </description>
+  </class>
+  </class>
+    <class name="chiba_robot_senior_team/undercarrige_transform_node" 
+    type="undercarrige_transform_node::UndercarrigeTransformNode" 
+    base_class_type="nodelet::Nodelet">
+    <description>
+    </description>
+  </class>
 </library>

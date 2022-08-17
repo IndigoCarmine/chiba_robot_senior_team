@@ -10,4 +10,16 @@
   <node pkg="nodelet" type="nodelet" name="node_loader0"
         args="load chiba_robot_senior_team/controller_node $(arg manager_name)" >
   </node>
+  <node pkg="nodelet" type="nodelet" name="node_loader0"
+        args="load chiba_robot_senior_team/actuater_transform_node $(arg manager_name)" >
+  </node>
+  <node pkg="nodelet" type="nodelet" name="node_loader0"
+        args="load chiba_robot_senior_team/id_manager_node $(arg manager_name)" >
+  </node>
+  <node pkg="nodelet" type="nodelet" name="node_loader0"
+        args="load chiba_robot_senior_team/status_transform_node $(arg manager_name)" >
+  </node>
+  <node pkg="nodelet" type="nodelet" name="node_loader0"
+        args="load chiba_robot_senior_team/undercarrige_transform_node $(arg manager_name)" >
+  </node>
 </launch>

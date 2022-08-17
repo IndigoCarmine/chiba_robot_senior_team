@@ -9,7 +9,6 @@
 #include <boost/array.hpp>
 
 #include <can_plugins/Frame.h>
-#include "can_utils.hpp"
 
 #include <stdint.h>
 #include <string>
@@ -36,12 +35,12 @@ namespace can_input_node{
                     ROS_ASSERT("you should set topic_name_ in the derived class");
                     return;
                 }
-                sub_ = nh.subscribe(topic_name_, 1, &CanInputNode::can_input, this);
+                sub_ = nh.subscribe<T>(topic_name_, 1, &CanInputNode::can_input, this);
                 can_rx_pub_ = nh.advertise<can_plugins::Frame>("can_rx", 1000);
             };
             virtual void can_input(const T& data);
         protected:
-            inline void publish(can_plugins::Frame frame){
+            inline virtual void publish(can_plugins::Frame frame){
                 can_rx_pub_.publish(frame);
             };
             std::string topic_name_;
