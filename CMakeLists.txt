@@ -126,7 +126,7 @@ include_directories(
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
    src/controller_node.cpp
-   src/actuaters_transform_node.cpp
+   src/actuators_transform_node.cpp
    src/id_manager_node.cpp
    src/status_transform_node.cpp
    src/undercarrige_transform_node.cpp

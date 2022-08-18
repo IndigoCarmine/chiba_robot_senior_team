@@ -1,18 +1,29 @@
-#include "can_output_node.hpp"
+#define TOPIC_NAME "status_params"
+
+#include <ros/ros.h>
+#include <nodelet/nodelet.h>
+#include <pluginlib/class_list_macros.h>
+#include <can_plugins/Frame.h>
 #include <std_msgs/Int32.h>
 #include <ros/ros.h>
 
 namespace status_transform_node{
-    class StatusTransformNode : public can_output_node::CanOutputNode<std_msgs::Int32>{
+    class StatusTransformNode : public nodelet::Nodelet{
+        private:
+            ros::NodeHandle nodehandle_;
+            ros::Publisher pub_;
+            ros::Subscriber can_rx_sub_;
         public:
-            void onInit()override{
-                topic_name_ = "status";
-                callback_ = [this](const can_plugins::Frame::ConstPtr& msg){this->statusCallback(msg);};
-                CanOutputNode::onInit();
+            void onInit(){
+                nodehandle_ = getNodeHandle();
+                can_rx_sub_ = nodehandle_.subscribe("can_rx", 1000,&StatusTransformNode::callback, this);
+                pub_ = nodehandle_.advertise<std_msgs::Int32>(TOPIC_NAME, 1000);
+                NODELET_INFO("StatusTransformNode is started.");
             }
-            void statusCallback(const can_plugins::Frame::ConstPtr &msg){
+            void callback(const can_plugins::Frame::ConstPtr &msg){
                 //TODO
-                ROS_ASSERT("status_transform_node::statusCallback is not implemented yet");
+                NODELET_WARN("status_transform_node::statusCallback is not implemented yet");
             }
     };
 }
+PLUGINLIB_EXPORT_CLASS(status_transform_node::StatusTransformNode, nodelet::Nodelet);

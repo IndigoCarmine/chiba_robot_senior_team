@@ -17,7 +17,7 @@ namespace controller_node{
             ros::NodeHandle& pnh_ = getPrivateNodeHandle();
             joy_sub_ = nh_.subscribe("joy", 1000, &ControllerNode::joyCallback, this);
             twist_pub_ = nh_.advertise<geometry_msgs::Twist>("cmd_vel", 1000);
-            actuators_pub_ = nh_.advertise<std_msgs::Int32>("actuators", 1000);
+            actuators_pub_ = nh_.advertise<std_msgs::Int32>("", 1000);
             NODELET_INFO("controller_node has started.");
         }
         private:

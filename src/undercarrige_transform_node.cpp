@@ -1,26 +1,33 @@
-#include "can_input_node.hpp"
-#include <geometry_msgs/Vector3.h>
+#define TOPIC_NAME "undercarrige_params"
 
+
+#include <ros/ros.h>
+#include <geometry_msgs/Vector3.h>
+#include <can_plugins/Frame.h>
 #include <nodelet/nodelet.h>
 #include <pluginlib/class_list_macros.h>
 
 
 
 namespace undercarrige_transform_node{
-    class UndercarrigeTransformNode : public can_input_node::CanInputNode<geometry_msgs::Vector3,geometry_msgs::Vector3::ConstPtr>{
+    class UndercarrigeTransformNode : public nodelet::Nodelet{
+        private:
+            ros::NodeHandle nodehandle_;
+            ros::Subscriber sub_;
+            ros::Publisher can_tx_pub_;
         public:
-            void onInit()override{
-                topic_name_ = "un_vel";
-//                callback_  = boost::bind(callback_);
-                callback_ = boost::bind(&UndercarrigeTransformNode::undercarrigeCallback,this,_1);
-                CanInputNode::onInit();
+            void onInit(){
+                sub_ = nodehandle_.subscribe(TOPIC_NAME, 1000, &UndercarrigeTransformNode::callback, this);
+                can_tx_pub_ = nodehandle_.advertise<can_plugins::Frame>("can_tx", 1000);
+                NODELET_INFO("UndercarrigeTransformNode is started.");
             }
         private:
-            void undercarrigeCallback(const geometry_msgs::Vector3::ConstPtr &data){
+            void callback(const geometry_msgs::Vector3::ConstPtr &data){
                 //TODO 
-                ROS_ASSERT("undercarrige_transform_node::undercarrigeCallback is not implemented yet");
+                NODELET_WARN("undercarrige_transform_node::undercarrigeCallback is not implemented yet");
+               
                 can_plugins::Frame frame;
-                publish(frame);
+                can_tx_pub_.publish(frame);
                 
             }
     };

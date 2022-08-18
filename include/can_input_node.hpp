@@ -31,8 +31,8 @@ namespace can_input_node{
             //you should set this in the derived class
             std::string topic_name_;
             //you should set the callback function in the derived class
-            //std::function <void(const TConstPtr&)> callback_;
-            void (*callback_)(const TConstPtr&);
+            std::function <void(const TConstPtr&)> callback_;
+            //void (*callback_)(const TConstPtr&);
             ros::NodeHandle& nodehandle_;
             ros::Subscriber sub_;
         private:
@@ -46,7 +46,7 @@ namespace can_input_node{
                     return;
                 }
                 nodehandle_ = getNodeHandle();
-                sub_ = nodehandle_.subscribe<T>(topic_name_, 1000, callback_, this);
+ //               sub_ = nodehandle_.subscribe<T>(topic_name_, 1000, callback_, this);
                 can_tx_pub_ = nodehandle_.advertise<can_plugins::Frame>("can_tx", 1000);
             }
         protected:

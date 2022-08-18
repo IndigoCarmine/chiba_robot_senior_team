@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <library path="lib/libchiba_robot_senior_team">
   <class name="chiba_robot_senior_team/controller_node" 
     type="controller_node::ControllerNode" 
@@ -5,8 +6,8 @@
     <description>
     </description>
   </class>
-  <class name="chiba_robot_senior_team/actuaters_transform_node" 
-    type="actuaters_transform_node::ActuatersTransformNode" 
+  <class name="chiba_robot_senior_team/actuators_transform_node" 
+    type="actuators_transform_node::ActuatorsTransformNode" 
     base_class_type="nodelet::Nodelet">
     <description>
     </description>
@@ -17,14 +18,13 @@
     <description>
     </description>
   </class>
-    <class name="chiba_robot_senior_team/state_manager_node" 
-    type="state_manager_node::StateManagerNode" 
+    <class name="chiba_robot_senior_team/status_transform_node" 
+    type="status_transform_node::StatusTransformNode" 
     base_class_type="nodelet::Nodelet">
     <description>
     </description>
   </class>
-  </class>
-    <class name="chiba_robot_senior_team/undercarrige_transform_node" 
+  <class name="chiba_robot_senior_team/undercarrige_transform_node" 
     type="undercarrige_transform_node::UndercarrigeTransformNode" 
     base_class_type="nodelet::Nodelet">
     <description>

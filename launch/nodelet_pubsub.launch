@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <launch>
   <arg name="manager_name" default="nodelet_manager" />
   <arg name="manager_threads" default="4" />
@@ -10,16 +9,16 @@
   <node pkg="nodelet" type="nodelet" name="node_loader0"
         args="load chiba_robot_senior_team/controller_node $(arg manager_name)" >
   </node>
-  <node pkg="nodelet" type="nodelet" name="node_loader0"
-        args="load chiba_robot_senior_team/actuater_transform_node $(arg manager_name)" >
+  <node pkg="nodelet" type="nodelet" name="node_loader1"
+        args="load chiba_robot_senior_team/actuators_transform_node $(arg manager_name)" >
   </node>
-  <node pkg="nodelet" type="nodelet" name="node_loader0"
+  <node pkg="nodelet" type="nodelet" name="node_loader2"
         args="load chiba_robot_senior_team/id_manager_node $(arg manager_name)" >
   </node>
-  <node pkg="nodelet" type="nodelet" name="node_loader0"
+  <node pkg="nodelet" type="nodelet" name="node_loader3"
         args="load chiba_robot_senior_team/status_transform_node $(arg manager_name)" >
   </node>
-  <node pkg="nodelet" type="nodelet" name="node_loader0"
+  <node pkg="nodelet" type="nodelet" name="node_loader4"
         args="load chiba_robot_senior_team/undercarrige_transform_node $(arg manager_name)" >
   </node>
 </launch>
