@@ -7,11 +7,12 @@ namespace status_transform_node{
         public:
             void onInit()override{
                 topic_name_ = "status";
+                callback_ = [this](const can_plugins::Frame::ConstPtr& msg){this->statusCallback(msg);};
                 CanOutputNode::onInit();
             }
-            void can_output(const can_plugins::Frame::ConstPtr &msg)override{
+            void statusCallback(const can_plugins::Frame::ConstPtr &msg){
                 //TODO
-                ROS_ASSERT("status_transform_node::can_output is not implemented yet");
+                ROS_ASSERT("status_transform_node::statusCallback is not implemented yet");
             }
     };
 }

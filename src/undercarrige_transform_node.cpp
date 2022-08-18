@@ -10,13 +10,15 @@ namespace undercarrige_transform_node{
     class UndercarrigeTransformNode : public can_input_node::CanInputNode<geometry_msgs::Vector3,geometry_msgs::Vector3::ConstPtr>{
         public:
             void onInit()override{
-                topic_name_ = "undercarrige_velocity";
+                topic_name_ = "un_vel";
+//                callback_  = boost::bind(callback_);
+                callback_ = boost::bind(&UndercarrigeTransformNode::undercarrigeCallback,this,_1);
                 CanInputNode::onInit();
             }
         private:
-            void can_input(const geometry_msgs::Vector3::ConstPtr &data)override{
+            void undercarrigeCallback(const geometry_msgs::Vector3::ConstPtr &data){
                 //TODO 
-                ROS_ASSERT("undercarrige_transform_node::transform is not implemented yet");
+                ROS_ASSERT("undercarrige_transform_node::undercarrigeCallback is not implemented yet");
                 can_plugins::Frame frame;
                 publish(frame);
                 

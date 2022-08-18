@@ -9,12 +9,13 @@ namespace actiuaters_transform_node{
         public:
         void onInit()override{
             topic_name_ = "actuater_parameters";
+            callback_ = [this](const geometry_msgs::Twist::ConstPtr& msg){this->actuatersCallback(msg);};
             CanInputNode::onInit();
         }
         protected:
-        void can_input(const geometry_msgs::Twist::ConstPtr &data)override{
+        void actuatersCallback(const geometry_msgs::Twist::ConstPtr &data){
             //TODO
-            ROS_ASSERT("actuaters_transform_node::transform is not implemented yet");
+            ROS_ASSERT("actuaters_transform_node::actuatersCallback is not implemented yet");
             
 
         }
