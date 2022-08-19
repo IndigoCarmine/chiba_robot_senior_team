@@ -1,31 +1,61 @@
 <?xml version="1.0"?>
 <library path="lib/libchiba_robot_senior_team">
-  <class name="chiba_robot_senior_team/controller_node" 
-    type="controller_node::ControllerNode" 
-    base_class_type="nodelet::Nodelet">
-    <description>
-    </description>
-  </class>
   <class name="chiba_robot_senior_team/actuators_transform_node" 
     type="actuators_transform_node::ActuatorsTransformNode" 
     base_class_type="nodelet::Nodelet">
     <description>
     </description>
   </class>
-    <class name="chiba_robot_senior_team/id_manager_node" 
+  <class name="chiba_robot_senior_team/controller_node" 
+    type="controller_node::ControllerNode" 
+    base_class_type="nodelet::Nodelet">
+    <description>
+    </description>
+  </class>
+  <class name="chiba_robot_senior_team/emergency_transform_node" 
+    type="emergency_transform_node::EmergencyTransformNode" 
+    base_class_type="nodelet::Nodelet">
+    <description>
+    </description>
+  </class>
+  <class name="chiba_robot_senior_team/id_manager_node" 
     type="id_manager_node::IDManagerNode" 
     base_class_type="nodelet::Nodelet">
     <description>
     </description>
   </class>
-    <class name="chiba_robot_senior_team/status_transform_node" 
+  <class name="chiba_robot_senior_team/odometry_transform_node" 
+    type="odometry_transform_node::OdometryTransformNode" 
+    base_class_type="nodelet::Nodelet">
+    <description>
+    </description>
+  </class>
+  <class name="chiba_robot_senior_team/status_transform_node" 
     type="status_transform_node::StatusTransformNode" 
+    base_class_type="nodelet::Nodelet">
+    <description>
+    </description>
+  </class>
+  <class name="chiba_robot_senior_team/turret_wheel_transform_node" 
+    type="turret_wheel_transform_node::TurretWheelTransformNode" 
+    base_class_type="nodelet::Nodelet">
+    <description>
+    </description>  
+  </class>
+  <class name="chiba_robot_senior_team/turret_wheel_control_node" 
+    type="turret_wheel_control_node::TurretWheelControlNode" 
     base_class_type="nodelet::Nodelet">
     <description>
     </description>
   </class>
   <class name="chiba_robot_senior_team/undercarrige_transform_node" 
     type="undercarrige_transform_node::UndercarrigeTransformNode" 
+    base_class_type="nodelet::Nodelet">
+    <description>
+    </description>
+  </class>
+  <class name="chiba_robot_senior_team/undercarrige_control_node" 
+    type="undercarrige_control_node::UndercarrigeControlNode" 
     base_class_type="nodelet::Nodelet">
     <description>
     </description>

@@ -8,14 +8,19 @@
 #include <boost/array.hpp>
 
 #include <can_plugins/Frame.h>
+#include <can_utils_rev.hpp>
+#include "common_settings.hpp"
 
 #include <stdint.h>
 #include <string>
+#include <map>
+
 
 #include <nodelet/nodelet.h>
 #include <pluginlib/class_list_macros.h>
 
-#include <map>
+
+
 
 namespace id_manager_node{
   class IDManagerNode: public nodelet::Nodelet
@@ -39,8 +44,8 @@ namespace id_manager_node{
   void IDManagerNode::onInit(){
     nodehandle_ = getNodeHandle();
 
-    can_tx_pub_	= nodehandle_.advertise<can_plugins::Frame>("can_tx", 1000);
-    can_rx_sub_	= nodehandle_.subscribe<can_plugins::Frame>("can_rx", 1000, &IDManagerNode::canRxCallback, this);
+    can_tx_pub_	= nodehandle_.advertise<can_plugins::Frame>(common_settings::can_tx, 1);
+    can_rx_sub_	= nodehandle_.subscribe<can_plugins::Frame>(common_settings::can_rx, 1, &IDManagerNode::canRxCallback, this);
 //    _id_name_service = _nh.advertiseService("id_name_service",&IDManagerNode::idNameServiceCallback,this);
     NODELET_WARN("I cannnot use advertiseService!!!!!!!!!!!");
     NODELET_INFO("id_manager_node has started.");

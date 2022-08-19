@@ -118,18 +118,23 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
   include
+  ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
-add_library(${PROJECT_NAME}
-   src/controller_node.cpp
-   src/actuators_transform_node.cpp
-   src/id_manager_node.cpp
-   src/status_transform_node.cpp
-   src/undercarrige_transform_node.cpp
+add_library(
+  ${PROJECT_NAME}
+  src/actuators_transform_node.cpp
+  src/controller_node.cpp
+  src/emergency_transform_node.cpp
+  src/id_manager_node.cpp
+  src/odometry_transform_node.cpp
+  src/status_transform_node.cpp
+  src/turret_wheel_transform_node.cpp
+  src/turret_wheel_control_node.cpp
+  src/undercarrige_transform_node.cpp
+  src/undercarrige_control_node.cpp
  )
 
 ## Add cmake target dependencies of the library
