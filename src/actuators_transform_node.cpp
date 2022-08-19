@@ -21,7 +21,7 @@ namespace actuators_transform_node {
         public:
         void onInit(){
 
-            nodehandle_ = getNodeHandle();
+            nodehandle_ = getMTNodeHandle();
             can_tx_pub_ = nodehandle_.advertise<can_plugins::Frame>(common_settings::can_tx, 1000);
             sub_ = nodehandle_.subscribe(common_settings::turret_wheel_params, 1, &ActuatorsTransformNode::callback, this);
         }

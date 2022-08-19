@@ -18,7 +18,7 @@ namespace status_transform_node{
             ros::Subscriber can_rx_sub_;
         public:
             void onInit(){
-                nodehandle_ = getNodeHandle();
+                nodehandle_ = getMTNodeHandle();
                 can_rx_sub_ = nodehandle_.subscribe(common_settings::can_rx, 1,&StatusTransformNode::callback, this);
                 pub_ = nodehandle_.advertise<std_msgs::Int32>(common_settings::status_param, 1);
                 NODELET_INFO("StatusTransformNode is started.");

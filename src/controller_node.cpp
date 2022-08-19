@@ -17,7 +17,7 @@ namespace controller_node{
         std::string joy_frame_id_;
         public:
         void onInit(){
-            ros::NodeHandle& nh_ = getNodeHandle();
+            ros::NodeHandle& nh_ = getMTNodeHandle();
             ros::NodeHandle& pnh_ = getPrivateNodeHandle();
             joy_sub_ = nh_.subscribe("joy", 1, &ControllerNode::joyCallback, this);
             twist_pub_ = nh_.advertise<geometry_msgs::TwistStamped>(common_settings::joystick_params, 1);

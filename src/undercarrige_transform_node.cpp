@@ -27,7 +27,7 @@ namespace undercarrige_transform_node{
 
             //Calcuate motor speed
             double calcutateSpeed(const std::array<double,2> &linear, const std::array<double,2> &angular){
-                return (double)(linear_rate * std::inner_product(linear.begin(), linear.end(), direction.begin(), 0.0f)) + (double)(angular_rate* std::inner_product(angular.begin(), angular.end(), direction.begin(), 0.0f));
+                return linear_rate * std::inner_product(linear.begin(), linear.end(), direction.begin(), 0.0) + angular_rate* std::inner_product(angular.begin(), angular.end(), direction.begin(), 0.0);
             }
     };
     
@@ -46,6 +46,7 @@ namespace undercarrige_transform_node{
             ros::Publisher can_tx_pub_;
         public:
             void onInit(){
+                nodehandle_ = getMTNodeHandle();
                 sub_ = nodehandle_.subscribe(common_settings::undercarrige_param, 1000, &UndercarrigeTransformNode::callback, this);
                 can_tx_pub_ = nodehandle_.advertise<can_plugins::Frame>(common_settings::can_tx, 1000);
                 NODELET_INFO("UndercarrigeTransformNode is started.");

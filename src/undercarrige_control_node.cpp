@@ -23,7 +23,7 @@ namespace undercarrige_control_node{
         public:
             void onInit(){
                 NODELET_INFO("UndercarrigeControlNode is started.");
-                nodehandle_ = getNodeHandle();
+                nodehandle_ = getMTNodeHandle();
                 sub_ = nodehandle_.subscribe(common_settings::joystick_params, 1, &UndercarrigeControlNode::callback, this);
                 pub_ = nodehandle_.advertise<geometry_msgs::Twist>(common_settings::undercarrige_param, 1000);
             }

@@ -14,7 +14,7 @@ namespace odometry_transform_node{
             ros::Publisher pub_;
         public:
             void onInit(){
-                nodehandle_ = getNodeHandle();
+                nodehandle_ = getMTNodeHandle();
                 can_rx_sub_ = nodehandle_.subscribe(common_settings::can_rx, 1, &OdometryTransformNode::callback, this);
                 pub_ = nodehandle_.advertise<geometry_msgs::Twist>(common_settings::odometry_param, 1);
                 NODELET_INFO("OdometryTransformNode is started.");  

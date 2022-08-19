@@ -42,7 +42,7 @@ namespace id_manager_node{
   };
 
   void IDManagerNode::onInit(){
-    nodehandle_ = getNodeHandle();
+    nodehandle_ = getMTNodeHandle();
 
     can_tx_pub_	= nodehandle_.advertise<can_plugins::Frame>(common_settings::can_tx, 1);
     can_rx_sub_	= nodehandle_.subscribe<can_plugins::Frame>(common_settings::can_rx, 1, &IDManagerNode::canRxCallback, this);
