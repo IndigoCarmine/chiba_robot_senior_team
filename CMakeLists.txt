@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.2)
 project(chiba_robot_senior_team)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -118,18 +118,23 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
-  ${catkin_INCLUDE_DIRS}
   include
+  ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
-add_library(${PROJECT_NAME}
-   src/controller_node.cpp
-   src/actuaters_transform_node.cpp
-   src/id_manager_node.cpp
-   src/status_transform_node.cpp
-   src/undercarrige_transform_node.cpp
+add_library(
+  ${PROJECT_NAME}
+  src/actuators_transform_node.cpp
+  src/controller_node.cpp
+  src/emergency_transform_node.cpp
+  src/id_manager_node.cpp
+  src/odometry_transform_node.cpp
+  src/status_transform_node.cpp
+  src/turret_wheel_transform_node.cpp
+  src/turret_wheel_control_node.cpp
+  src/undercarrige_transform_node.cpp
+  src/undercarrige_control_node.cpp
  )
 
 ## Add cmake target dependencies of the library

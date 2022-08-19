@@ -7,6 +7,8 @@
 #include <std_msgs/Float64.h>
 
 #include <boost/array.hpp>
+#include <boost/bind.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include <can_plugins/Frame.h>
 
@@ -26,31 +28,30 @@ namespace can_input_node{
     template<typename T, typename TConstPtr>
     class CanInputNode : public nodelet::Nodelet{
         protected: 
+            //you should set this in the derived class
             std::string topic_name_;
-            //you should override this function
-            virtual void can_input(const TConstPtr& data);
-        private:
+            //you should set the callback function in the derived class
+            std::function <void(const TConstPtr&)> callback_;
+            //void (*callback_)(const TConstPtr&);
+            ros::NodeHandle& nodehandle_;
             ros::Subscriber sub_;
-            ros::Publisher can_rx_pub_;
-            void callback(const TConstPtr& data){
-                can_input(data);
-            };
+        private:
+
+            ros::Publisher can_tx_pub_;
         public:
-            CanInputNode(){};
             virtual void onInit(){
-                ros::NodeHandle& nh_ = getNodeHandle();
-                ros::NodeHandle& pnh_ = getPrivateNodeHandle();
-                if(topic_name_.empty()){
-                    ROS_ASSERT("topic_name_ is not set");
-                    ROS_ASSERT("you should set topic_name_ in the derived class");
+                if(topic_name_.empty()||callback_==nullptr){
+                    NODELET_WARN("topic_name_ or callback_ are not set");
+                    NODELET_WARN("you should set topic_name_ and callback_ in the derived class");
                     return;
                 }
-                sub_ = nh_.subscribe<T>(topic_name_, 1000, &CanInputNode::callback);
-                can_rx_pub_ = nh_.advertise<can_plugins::Frame>("can_rx", 1000);
+                nodehandle_ = getNodeHandle();
+ //               sub_ = nodehandle_.subscribe<T>(topic_name_, 1000, callback_, this);
+                can_tx_pub_ = nodehandle_.advertise<can_plugins::Frame>("can_tx", 1000);
             }
         protected:
             inline void publish(can_plugins::Frame frame){
-                can_rx_pub_.publish(frame);
+                can_tx_pub_.publish(frame);
             }
 
     };

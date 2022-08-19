@@ -8,14 +8,19 @@
 #include <boost/array.hpp>
 
 #include <can_plugins/Frame.h>
+#include <can_utils_rev.hpp>
+#include "common_settings.hpp"
 
 #include <stdint.h>
 #include <string>
+#include <map>
+
 
 #include <nodelet/nodelet.h>
 #include <pluginlib/class_list_macros.h>
 
-#include <map>
+
+
 
 namespace id_manager_node{
   class IDManagerNode: public nodelet::Nodelet
@@ -28,19 +33,19 @@ namespace id_manager_node{
       void TestTxCallback(const std_msgs::UInt8::ConstPtr &msg);
       bool idNameServiceCallback(const std_msgs::Int32::ConstPtr &msg, const std_msgs::Int32::Ptr &res);
 
-      ros::NodeHandle _nh;
-      ros::Publisher _can_tx_pub;
-      ros::Subscriber _can_rx_sub;
-      ros::ServiceServer _id_name_service;
-      std::map<std::string,std::uint32_t> _id_dictionary;
+      ros::NodeHandle nodehandle_;
+      ros::Publisher can_tx_pub_;
+      ros::Subscriber can_rx_sub_;
+      ros::ServiceServer id_name_service_;
+      std::map<std::string,std::uint32_t> id_dictionary_;
       
   };
 
   void IDManagerNode::onInit(){
-    _nh = getNodeHandle();
+    nodehandle_ = getNodeHandle();
 
-    _can_tx_pub	= _nh.advertise<can_plugins::Frame>("can_tx", 1000);
-    _can_rx_sub	= _nh.subscribe<can_plugins::Frame>("can_rx", 1000, &IDManagerNode::canRxCallback);
+    can_tx_pub_	= nodehandle_.advertise<can_plugins::Frame>(common_settings::can_tx, 1);
+    can_rx_sub_	= nodehandle_.subscribe<can_plugins::Frame>(common_settings::can_rx, 1, &IDManagerNode::canRxCallback, this);
 //    _id_name_service = _nh.advertiseService("id_name_service",&IDManagerNode::idNameServiceCallback,this);
     NODELET_WARN("I cannnot use advertiseService!!!!!!!!!!!");
     NODELET_INFO("id_manager_node has started.");
@@ -48,7 +53,6 @@ namespace id_manager_node{
 
 
   void IDManagerNode::canRxCallback(const can_plugins::Frame::ConstPtr &msg){
-    NODELET_INFO("can_rx_callback");
     //TODO
     NODELET_WARN("I don't know what to do with this message. Sorry.");
     NODELET_WARN("You should write canRxCallback in IDManagerNode.");
@@ -56,7 +60,7 @@ namespace id_manager_node{
     if(msg->id == 0x700){
       std_msgs::Int32 id_msg;
       id_msg.data = msg->data[0];
-      _nh.setParam("id/"+ msg->id,id_msg.data);
+      nodehandle_.setParam("id/"+ msg->id,id_msg.data);
     }
   }
   enum class ServiceRequestMessage{
@@ -77,7 +81,7 @@ namespace id_manager_node{
           frame.id = 0x00;
           frame.dlc = 0;
           frame.data = {};
-          _can_tx_pub.publish(frame);
+          can_tx_pub_.publish(frame);
 
           //if it can success to broadcast, response with true
           res->data = 0;

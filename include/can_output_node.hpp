@@ -14,24 +14,22 @@ namespace can_output_node{
     template<typename T>
     class CanOutputNode : public nodelet::Nodelet{
         private:
-            ros::Subscriber can_rx_sub_;
             ros::Publisher pub_;
-            void callback(const can_plugins::Frame::ConstPtr &data){
-                can_output(data);
-            }
+
         protected:
-            virtual void can_output(const can_plugins::Frame::ConstPtr &data);    
+            ros::Subscriber can_rx_sub_;
+            std::function <void(const can_plugins::Frame::ConstPtr&)> callback_;
+             ros::NodeHandle& nodehandle_;
         public:
             virtual void onInit(){
-                ros::NodeHandle& nh = getNodeHandle();
-                ros::NodeHandle& private_nh = getPrivateNodeHandle();
+                nodehandle_ = getNodeHandle();
                 if(topic_name_.empty()){
                     ROS_ASSERT("topic_name_ is not set");
                     ROS_ASSERT("you should set topic_name_ in the derived class");
                     return;
                 }
-                can_rx_sub_ = nh.subscribe("can_rx", 1000, &CanOutputNode::callback, this);
-                pub_ = nh.advertise<T>(topic_name_, 1000);
+               // can_rx_sub_ = nodehandle_.subscribe("can_rx", 1000,boost::bind(callback_,this, _1));
+                pub_ = nodehandle_.advertise<T>(topic_name_, 1000);
             }
         protected:
             std::string topic_name_;

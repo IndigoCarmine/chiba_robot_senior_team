@@ -1,25 +1,39 @@
-<?xml version="1.0"?>
 <launch>
-  <arg name="manager_name" default="nodelet_manager" />
-  <arg name="manager_threads" default="4" />
+      <arg name="manager_name" default="nodelet_manager" />
+      <arg name="manager_threads" default="4" />
 
-  <node pkg="nodelet" type="nodelet" name="$(arg manager_name)" args="manager" output="screen">
-    <param name="num_worker_threads" value="$(arg manager_threads)" />
-  </node>
-  
-  <node pkg="nodelet" type="nodelet" name="node_loader0"
-        args="load chiba_robot_senior_team/controller_node $(arg manager_name)" >
-  </node>
-  <node pkg="nodelet" type="nodelet" name="node_loader0"
-        args="load chiba_robot_senior_team/actuater_transform_node $(arg manager_name)" >
-  </node>
-  <node pkg="nodelet" type="nodelet" name="node_loader0"
-        args="load chiba_robot_senior_team/id_manager_node $(arg manager_name)" >
-  </node>
-  <node pkg="nodelet" type="nodelet" name="node_loader0"
-        args="load chiba_robot_senior_team/status_transform_node $(arg manager_name)" >
-  </node>
-  <node pkg="nodelet" type="nodelet" name="node_loader0"
-        args="load chiba_robot_senior_team/undercarrige_transform_node $(arg manager_name)" >
-  </node>
+      <node pkg="nodelet" type="nodelet" name="$(arg manager_name)" args="manager" output="screen">
+            <param name="num_worker_threads" value="$(arg manager_threads)" />
+      </node>
+
+      <node pkg="joy" type="joy_node" name="joy" output="screen">
+            <param name="dev" value="/dev/input/js0" />
+      </node>
+      <node pkg="nodelet" type="nodelet" name="node_loader0"
+            args="load chiba_robot_senior_team/actuators_transform_node $(arg manager_name)" >
+      </node>
+      <node pkg="nodelet" type="nodelet" name="node_loader1"
+            args="load chiba_robot_senior_team/controller_node $(arg manager_name)" >
+      </node>
+      <node pkg="nodelet" type="nodelet" name="node_loader2"
+            args="load chiba_robot_senior_team/id_manager_node $(arg manager_name)" >
+      </node>
+      <node pkg="nodelet" type="nodelet" name="node_loader3"
+            args="load chiba_robot_senior_team/status_transform_node $(arg manager_name)" >
+      </node>
+      <node pkg="nodelet" type="nodelet" name="node_loader4"
+            args="load chiba_robot_senior_team/undercarrige_transform_node $(arg manager_name)" >
+      </node>
+      <node pkg="nodelet" type="nodelet" name="node_loader5"
+            args="load chiba_robot_senior_team/undercarrige_control_node $(arg manager_name)" >
+      </node>
+      <node pkg="nodelet" type="nodelet" name="node_loader6"
+            args="load chiba_robot_senior_team/turret_wheel_transform_node $(arg manager_name)" >
+      </node>
+      <node pkg="nodelet" type="nodelet" name="node_loader7"
+            args="load chiba_robot_senior_team/turret_wheel_control_node $(arg manager_name)" >
+      </node>
+      <node pkg="nodelet" type="nodelet" name="node_loader8"
+            args="load chiba_robot_senior_team/emergency_transform_node $(arg manager_name)" >
+      </node>
 </launch>
