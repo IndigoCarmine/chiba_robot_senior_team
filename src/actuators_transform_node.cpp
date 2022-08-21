@@ -22,11 +22,11 @@ namespace actuators_transform_node {
         void onInit(){
 
             nodehandle_ = getMTNodeHandle();
-            can_tx_pub_ = nodehandle_.advertise<can_plugins::Frame>(common_settings::can_tx, 1000);
-            sub_ = nodehandle_.subscribe(common_settings::turret_wheel_params, 1, &ActuatorsTransformNode::callback, this);
+            can_tx_pub_ = nodehandle_.advertise<common_settings::topic::CanTx::Message>(common_settings::topic::CanTx::name, 1);
+            sub_ = nodehandle_.subscribe<common_settings::topic::TurretWheelParams::Message>(common_settings::topic::TurretWheelParams::name, 1, &ActuatorsTransformNode::callback, this);
         }
         protected:
-        void callback(const geometry_msgs::Twist::ConstPtr &data){
+        void callback(const geometry_msgs::Vector3::ConstPtr &data){
             //TODO
             NODELET_WARN("actuaters_transform_node::actuatersCallback is not implemented yet");
             
@@ -37,4 +37,4 @@ namespace actuators_transform_node {
     };
 } // namespace undercarrige_transform_node
 
-PLUGINLIB_EXPORT_CLASS(actuators_transform_node::ActuatorsTransformNode, nodelet::Nodelet);
+PLUGINLIB_EXPORT_CLASS(actuators_transform_node::ActuatorsTransformNode, nodelet::Nodelet)

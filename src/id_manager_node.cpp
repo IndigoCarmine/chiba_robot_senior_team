@@ -44,11 +44,11 @@ namespace id_manager_node{
   void IDManagerNode::onInit(){
     nodehandle_ = getMTNodeHandle();
 
-    can_tx_pub_	= nodehandle_.advertise<can_plugins::Frame>(common_settings::can_tx, 1);
-    can_rx_sub_	= nodehandle_.subscribe<can_plugins::Frame>(common_settings::can_rx, 1, &IDManagerNode::canRxCallback, this);
+    can_tx_pub_	= nodehandle_.advertise<common_settings::topic::CanTx::Message>(common_settings::topic::CanTx::name, 1);
+    can_rx_sub_	= nodehandle_.subscribe<common_settings::topic::CanRx::Message>(common_settings::topic::CanRx::name, 1, &IDManagerNode::canRxCallback, this);
 //    _id_name_service = _nh.advertiseService("id_name_service",&IDManagerNode::idNameServiceCallback,this);
     NODELET_WARN("I cannnot use advertiseService!!!!!!!!!!!");
-    NODELET_INFO("id_manager_node has started.");
+    NODELET_INFO("IDManagerNode has started.");
   }
 
 
@@ -100,4 +100,4 @@ namespace id_manager_node{
     }
   }
 }// namespace testnode
-PLUGINLIB_EXPORT_CLASS(id_manager_node::IDManagerNode, nodelet::Nodelet);
+PLUGINLIB_EXPORT_CLASS(id_manager_node::IDManagerNode, nodelet::Nodelet)

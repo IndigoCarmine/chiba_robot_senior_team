@@ -24,8 +24,8 @@ namespace undercarrige_control_node{
             void onInit(){
                 NODELET_INFO("UndercarrigeControlNode is started.");
                 nodehandle_ = getMTNodeHandle();
-                sub_ = nodehandle_.subscribe(common_settings::joystick_params, 1, &UndercarrigeControlNode::callback, this);
-                pub_ = nodehandle_.advertise<geometry_msgs::Twist>(common_settings::undercarrige_param, 1000);
+                sub_ = nodehandle_.subscribe<common_settings::topic::JoystickParams::Message>(common_settings::topic::JoystickParams::name, 1, &UndercarrigeControlNode::callback, this);
+                pub_ = nodehandle_.advertise<common_settings::topic::UndercarriageParams::Message>(common_settings::topic::UndercarriageParams::name, 1);
             }
 
         private:

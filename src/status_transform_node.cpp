@@ -19,8 +19,8 @@ namespace status_transform_node{
         public:
             void onInit(){
                 nodehandle_ = getMTNodeHandle();
-                can_rx_sub_ = nodehandle_.subscribe(common_settings::can_rx, 1,&StatusTransformNode::callback, this);
-                pub_ = nodehandle_.advertise<std_msgs::Int32>(common_settings::status_param, 1);
+                can_rx_sub_ = nodehandle_.subscribe<common_settings::topic::CanRx::Message>(common_settings::topic::CanRx::name, 1,&StatusTransformNode::callback, this);
+                pub_ = nodehandle_.advertise<common_settings::topic::StatusParams::Message>(common_settings::topic::StatusParams::name, 1);
                 NODELET_INFO("StatusTransformNode is started.");
             }
             void callback(const can_plugins::Frame::ConstPtr &msg){
@@ -30,4 +30,4 @@ namespace status_transform_node{
             }
     };
 }
-PLUGINLIB_EXPORT_CLASS(status_transform_node::StatusTransformNode, nodelet::Nodelet);
+PLUGINLIB_EXPORT_CLASS(status_transform_node::StatusTransformNode, nodelet::Nodelet)

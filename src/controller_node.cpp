@@ -20,7 +20,7 @@ namespace controller_node{
             ros::NodeHandle& nh_ = getMTNodeHandle();
             ros::NodeHandle& pnh_ = getPrivateNodeHandle();
             joy_sub_ = nh_.subscribe("joy", 1, &ControllerNode::joyCallback, this);
-            twist_pub_ = nh_.advertise<geometry_msgs::TwistStamped>(common_settings::joystick_params, 1);
+            twist_pub_ = nh_.advertise<common_settings::topic::JoystickParams::Message>(common_settings::topic::JoystickParams::name, 1);
             actuators_pub_ = nh_.advertise<std_msgs::Int32>("", 1);
             NODELET_INFO("controller_node has started.");
             joy_frame_id_ = common_settings::normal_mode;
@@ -57,4 +57,4 @@ namespace controller_node{
         }
     };
 } // namespace controller_node
-PLUGINLIB_EXPORT_CLASS(controller_node::ControllerNode, nodelet::Nodelet);
+PLUGINLIB_EXPORT_CLASS(controller_node::ControllerNode, nodelet::Nodelet)

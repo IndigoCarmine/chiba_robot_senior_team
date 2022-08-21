@@ -17,8 +17,8 @@ namespace emergency_transform_node{
         public:
             void onInit(){
                 nodehandle_ = getMTNodeHandle();
-                can_tx_pub_ = nodehandle_.advertise<can_plugins::Frame>(common_settings::can_tx, 1);
-                sub_ = nodehandle_.subscribe(common_settings::emergency_cmd, 1, &EmergencyTransformNode::callback, this);
+                can_tx_pub_ = nodehandle_.advertise<common_settings::topic::CanTx::Message>(common_settings::topic::CanTx::name, 1);
+                sub_ = nodehandle_.subscribe<common_settings::topic::EmergencyCmd::Message>(common_settings::topic::EmergencyCmd::name, 1, &EmergencyTransformNode::callback, this);
                 id_list_ = {0x00,0x01};
                 NODELET_INFO("EmergencyTransformNode is started.");  
                 NODELET_WARN("EmergencyTransformNode : id_list_ is not implemented yet");
@@ -31,18 +31,18 @@ namespace emergency_transform_node{
                     //all moters are stopped
                     for(int i =0; i<50;i++){
                         for(uint16_t id : id_list_){
-                        can_tx_pub_.publish(can_utils::makeFrame(id, can_utils::Comand::shutdown));
+                        can_tx_pub_.publish(can_utils::makeFrame(id, can_utils::Command::shutdown));
                         }
                     }
 
                 }else{
                     //all moters are restarted
                     for(uint16_t id : id_list_){
-                        can_tx_pub_.publish(can_utils::makeFrame(id, can_utils::Comand::recover));
+                        can_tx_pub_.publish(can_utils::makeFrame(id, can_utils::Command::recover));
                         NODELET_WARN("if Shirasu formware don't set default mode, it happens that the motor is not working or undefined behavior.");
                         //if Shirasu formware don't set default mode, it happens that the motor is not working or undefined behavior.
                         //you should use the following code. but it forces the motor to be in velocity mode.
-                        //can_tx_pub_.publish(can_utils::makeFrame(id, can_utils::Comand::recover_velocity));
+                        //can_tx_pub_.publish(can_utils::makeFrame(id, can_utils::Command::recover_velocity));
                     }
                 }
 
@@ -50,4 +50,4 @@ namespace emergency_transform_node{
             }
     };
 }//namespace emergency_transform_node
-PLUGINLIB_EXPORT_CLASS(emergency_transform_node::EmergencyTransformNode, nodelet::Nodelet);
+PLUGINLIB_EXPORT_CLASS(emergency_transform_node::EmergencyTransformNode, nodelet::Nodelet)

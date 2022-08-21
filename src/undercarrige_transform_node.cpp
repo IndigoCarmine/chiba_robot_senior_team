@@ -47,8 +47,8 @@ namespace undercarrige_transform_node{
         public:
             void onInit(){
                 nodehandle_ = getMTNodeHandle();
-                sub_ = nodehandle_.subscribe(common_settings::undercarrige_param, 1000, &UndercarrigeTransformNode::callback, this);
-                can_tx_pub_ = nodehandle_.advertise<can_plugins::Frame>(common_settings::can_tx, 1000);
+                sub_ = nodehandle_.subscribe<common_settings::topic::UndercarriageParams::Message>(common_settings::topic::UndercarriageParams::name, 1, &UndercarrigeTransformNode::callback, this);
+                can_tx_pub_ = nodehandle_.advertise<common_settings::topic::CanTx::Message>(common_settings::topic::CanTx::name, 1);
                 NODELET_INFO("UndercarrigeTransformNode is started.");
             }
         private:
@@ -56,7 +56,7 @@ namespace undercarrige_transform_node{
                 NODELET_WARN("UndercarrigeTransformNode : moters is test param.");
 
                 //Calculate the speed of each motor and publish the can frame.
-                for(int i = 0; i < moters.size(); i++){
+                for(unsigned int i = 0; i < moters.size(); i++){
                     can_plugins::Frame frame = can_utils::makeFrame(moters[i].id, moters[i].calcutateSpeed({data->linear.x, data->linear.y}, {data->angular.x, data->angular.y}));
                     can_tx_pub_.publish(frame);
                 }
@@ -65,4 +65,4 @@ namespace undercarrige_transform_node{
     };
 
 } // namespace undercarrige_transform_node
-PLUGINLIB_EXPORT_CLASS(undercarrige_transform_node::UndercarrigeTransformNode, nodelet::Nodelet);
+PLUGINLIB_EXPORT_CLASS(undercarrige_transform_node::UndercarrigeTransformNode, nodelet::Nodelet)

@@ -16,8 +16,8 @@ namespace turret_wheel_control_node{
         public:
             void onInit(){
                 nodehandle_ = getMTNodeHandle();
-                sub_ = nodehandle_.subscribe(common_settings::joystick_params, 1, &TurretWheelControlNode::callback, this);
-                pub_ = nodehandle_.advertise<geometry_msgs::Vector3>(common_settings::turret_wheel_params, 1);
+                sub_ = nodehandle_.subscribe<common_settings::topic::JoystickParams::Message>(common_settings::topic::JoystickParams::name, 1, &TurretWheelControlNode::callback, this);
+                pub_ = nodehandle_.advertise<common_settings::topic::TurretWheelParams::Message>(common_settings::topic::TurretWheelParams::name, 1);
                 NODELET_INFO("TurretWheelControlNode is started.");
             }
             protected:
