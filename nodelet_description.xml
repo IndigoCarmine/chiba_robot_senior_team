@@ -60,4 +60,10 @@
     <description>
     </description>
   </class>
+  <class name= "chiba_robot_senior_team/parameter_server_node" 
+    type="parameter_server_node::ParameterServerNode" 
+    base_class_type="nodelet::Nodelet">
+    <description>
+    </description>
+  </class>
 </library>
