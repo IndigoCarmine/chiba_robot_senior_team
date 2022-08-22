@@ -41,6 +41,7 @@
     <node pkg="nodelet" type="nodelet" name="node_loader8"
           args="load chiba_robot_senior_team/emergency_transform_node $(arg manager_name)" >
     </node>
-    <node pkg="nodelet" type="nodelet" name="node_loader9"
+    <!-- <node pkg="nodelet" type="nodelet" name="node_loader9"
           args="load chiba_robot_senior_team/parameter_server_node $(arg manager_name)" >
+      </node> -->
 </launch>
