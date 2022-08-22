@@ -11,14 +11,14 @@
 namespace controller_node{
     class ControllerNode : public nodelet::Nodelet{
         private:
-        ros::Subscriber joy_sub_;
-        ros::Publisher twist_pub_;
-        ros::Publisher actuators_pub_;
-        std::string joy_frame_id_;
+            ros::Subscriber joy_sub_;
+            ros::Publisher twist_pub_;
+            ros::Publisher actuators_pub_;
+            std::string joy_frame_id_;
+            ros::NodeHandle nh_;
         public:
         void onInit(){
-            ros::NodeHandle& nh_ = getMTNodeHandle();
-            ros::NodeHandle& pnh_ = getPrivateNodeHandle();
+            nh_ = getMTNodeHandle();
             joy_sub_ = nh_.subscribe("joy", 1, &ControllerNode::joyCallback, this);
             twist_pub_ = nh_.advertise<common_settings::topic::JoystickParams::Message>(common_settings::topic::JoystickParams::name, 1);
             actuators_pub_ = nh_.advertise<std_msgs::Int32>("", 1);

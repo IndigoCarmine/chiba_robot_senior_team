@@ -52,14 +52,15 @@ find_package(catkin REQUIRED COMPONENTS
 # Generate messages in the 'msg' folder
 add_message_files(
   FILES
-  Notice.msg
+  IDNotice.msg
+  ParameterNotice.msg
 )
 
 # Generate services in the 'srv' folder
 add_service_files(
   FILES
-  ParamService.srv
-
+  ParameterService.srv
+  IDService.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -198,12 +199,11 @@ add_library(
 #   PATTERN ".svn" EXCLUDE
 # )
 
-## Mark other files for installation (e.g. launch and bag files, etc.)
-# install(FILES
-#   # myfile1
-#   # myfile2
-#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-# )
+# Mark other files for installation (e.g. launch and bag files, etc.)
+install(FILES
+  settings.json
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+)
 
 #############
 ## Testing ##

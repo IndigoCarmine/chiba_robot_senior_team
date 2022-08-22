@@ -7,9 +7,10 @@
 #include <std_msgs/Int32.h>
 #include <std_msgs/Bool.h>
 #include <std_msgs/Float64.h>
-#include <chiba_robot_senior_team/Notice.h>
-#include <chiba_robot_senior_team/ParamService.h>
-
+#include <chiba_robot_senior_team/IDNotice.h>
+#include <chiba_robot_senior_team/ParameterService.h>
+#include <chiba_robot_senior_team/ParameterNotice.h>
+#include <chiba_robot_senior_team/IDService.h>
 namespace common_settings{
 
 #define CHIBAROBO_deine_topic(TopicType, topic_name, MessageType)\
@@ -33,9 +34,9 @@ struct TopicType{\
         CHIBAROBO_deine_topic(JoystickParams, joystick_params, geometry_msgs::TwistStamped);//from ControllerNode to UndercarriageControlNode and TurretWheelControlNode. it means a value of two joysticks.
         CHIBAROBO_deine_topic(OdometryParams, odometry_params, geometry_msgs::Twist);// from OdometryTransformNode to ??. it means a position of the body.
         CHIBAROBO_deine_topic(EmergencyCmd, emergency_cmd, std_msgs::Bool);//from ?? to EmergencyTransformNode. it means a emergency cmd and restary cmd.( it may become other type.)
-        CHIBAROBO_deine_topic(SetParameter,set_parameter, chiba_robot_senior_team::Notice);//from ?? to ParameterServerNode. it can set or change parameter.
-        CHIBAROBO_deine_topic(ParameterChangeNotify, parameter_change_notify, chiba_robot_senior_team::Notice);// from ParameterServerNode to ??. it can notify that parameter is changed.
-        CHIBAROBO_deine_topic(GetParameter, get_parameter, chiba_robot_senior_team::ParamService);// from ?? to ParameterServerNode. it can get parameter.
+        CHIBAROBO_deine_topic(SetParameter,set_parameter, chiba_robot_senior_team::ParameterNotice);//from ?? to ParameterServerNode. it can set or change parameter.
+        CHIBAROBO_deine_topic(ParameterChangeNotify, parameter_change_notify, chiba_robot_senior_team::ParameterNotice);// from ParameterServerNode to ??. it can notify that parameter is changed.
+        CHIBAROBO_deine_topic(GetParameter, get_parameter, chiba_robot_senior_team::ParameterService);// from ?? to ParameterServerNode. it can get parameter.
     }
 
 #undef CHIBAROBO_deine_topic
