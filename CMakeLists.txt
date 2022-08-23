@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   nodelet
   can_plugins
   message_generation
+  dynamic_reconfigure
 )
 
 ## System dependencies are found with CMake's conventions
@@ -90,11 +91,10 @@ generate_messages(
 ##   * uncomment the "generate_dynamic_reconfigure_options" section below
 ##     and list every .cfg file to be processed
 
-## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
-#   cfg/DynReconf2.cfg
-# )
+# Generate dynamic reconfigure parameters in the 'cfg' folder
+generate_dynamic_reconfigure_options(
+  cfg/Parameter.cfg
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -106,10 +106,10 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES chiba_robot_senior_team
-#  CATKIN_DEPENDS roscpp std_msg
-#  DEPENDS system_lib
+ INCLUDE_DIRS include
+ LIBRARIES chiba_robot_senior_team
+ CATKIN_DEPENDS roscpp std_msg
+ DEPENDS system_lib
 )
 
 ###########
@@ -136,7 +136,6 @@ add_library(
   src/turret_wheel_control_node.cpp
   src/undercarrige_transform_node.cpp
   src/undercarrige_control_node.cpp
-  src/parameter_server_node.cpp
  )
 
 ## Add cmake target dependencies of the library
@@ -147,7 +146,7 @@ add_library(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/chiba_robot_senior_team_node.cpp)
+add_executable(parameter_server src/parameter_server.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -157,12 +156,14 @@ add_library(
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies()
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(
+  parameter_server
+  ${catkin_LIBRARIES}
+
+)
 
 #############
 ## Install ##
