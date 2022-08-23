@@ -37,7 +37,7 @@ namespace parameter_server_node{
                 sub_= nodehandle_.subscribe<SetParameter::Message>(SetParameter::name, 1, &ParameterServerNode::callback, this);
                 service_server_ = nodehandle_.advertiseService(SetParameter::name, &ParameterServerNode::service_callback, this);
                 pub_ = nodehandle_.advertise<ParameterChangeNotify::Message>(ParameterChangeNotify::name, 1);
-
+                
                 //inport setting json
                 NODELET_WARN("ParameterServerNode is reading json");
                 ptree ptree_;
