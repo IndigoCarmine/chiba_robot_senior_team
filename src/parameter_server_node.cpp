@@ -2,17 +2,16 @@
 #include <nodelet/nodelet.h>
 #include <pluginlib/class_list_macros.h>
 #include <common_settings.hpp>
+using namespace common_settings::topic;
 
-/*
 #include <iostream>
 #include <string>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/foreach.hpp>
 #include <boost/optional.hpp>
-
 using namespace boost::property_tree;
-*/
+
 namespace parameter_server_node{
     //it is like dynamic reconfigure on nodelet
     //it can be used to change double parameter on runtime
@@ -28,46 +27,45 @@ namespace parameter_server_node{
             ros::ServiceServer service_server_;
             std::map<std::string, double> parameters_;
         public:
-            void callback(const common_settings::topic::SetParameter::Message::ConstPtr & msg);
-            bool service_callback(common_settings::topic::GetParameter::Message::Request & req, common_settings::topic::GetParameter::Message::Response & res);
+            void callback(const SetParameter::Message::ConstPtr & msg);
+            bool service_callback(GetParameter::Message::Request & req, GetParameter::Message::Response & res);
 
         public:
             void onInit()override{
                 
                 nodehandle_ = getNodeHandle();
-                sub_= nodehandle_.subscribe<common_settings::topic::SetParameter::Message>(common_settings::topic::SetParameter::name, 1, &ParameterServerNode::callback, this);
-                service_server_ = nodehandle_.advertiseService(common_settings::topic::SetParameter::name, &ParameterServerNode::service_callback, this);
-                pub_ = nodehandle_.advertise<common_settings::topic::ParameterChangeNotify::Message>(common_settings::topic::ParameterChangeNotify::name, 1);
+                sub_= nodehandle_.subscribe<SetParameter::Message>(SetParameter::name, 1, &ParameterServerNode::callback, this);
+                service_server_ = nodehandle_.advertiseService(SetParameter::name, &ParameterServerNode::service_callback, this);
+                pub_ = nodehandle_.advertise<ParameterChangeNotify::Message>(ParameterChangeNotify::name, 1);
 
                 //inport setting json
                 NODELET_WARN("ParameterServerNode is reading json");
-                /*
                 ptree ptree_;
                 read_json("settings.json",ptree_);
                 // Data.info
-                std::string buffer;
-                BOOST_FOREACH (const ptree::value_type& child, ptree_.get_child("info")) {
-                    const ptree& info = child.second;
+                // std::string buffer;
+                // BOOST_FOREACH (const ptree::value_type& child, ptree_.get_child("info")) {
+                //     const ptree& info = child.second;
 
-                    // Data.info.id
-                    if (boost::optional<std::string> id = info.get_optional<std::string>("parameter_name")) {
-                        buffer = id.get();
-                    }
+                //     // Data.info.id
+                //     if (boost::optional<std::string> id = info.get_optional<std::string>("parameter_name")) {
+                //         buffer = id.get();
+                //     }
 
-                    // Data.info.name
-                    if (boost::optional<double> name = info.get_optional<double>("parameter")) {
-                        parameters_[buffer] = name.get();
-                    }
-                }
+                //     // Data.info.name
+                //     if (boost::optional<double> name = info.get_optional<double>("parameter")) {
+                //         parameters_[buffer] = name.get();
+                //     }
+                // }
                 //inport setting json END
-*/
+
 
                 NODELET_WARN("ParameterServerNode is started");
             }
 
     };
 
-    void ParameterServerNode::callback(const common_settings::topic::SetParameter::Message::ConstPtr & msg){
+    void ParameterServerNode::callback(const SetParameter::Message::ConstPtr & msg){
         //check vailidity of message
         if(msg->parameter_name == ""){
             NODELET_WARN("ParameterServerNode: parameter_name is empty");
@@ -76,7 +74,7 @@ namespace parameter_server_node{
         //set parameter and notify
         if(parameters_.find(msg->parameter_name) !=parameters_.end() || parameters_[msg->parameter_name] == msg->parameter ){
             parameters_[msg->parameter_name] = msg->parameter;
-            common_settings::topic::ParameterChangeNotify::Message notify_msg;
+            ParameterChangeNotify::Message notify_msg;
             notify_msg.parameter_name = msg->parameter_name;
             notify_msg.parameter = msg->parameter;
             pub_.publish(notify_msg);
@@ -85,7 +83,7 @@ namespace parameter_server_node{
         }
     }
 
-    bool ParameterServerNode::service_callback(common_settings::topic::GetParameter::Message::Request & req, common_settings::topic::GetParameter::Message::Response & res){
+    bool ParameterServerNode::service_callback(GetParameter::Message::Request & req, GetParameter::Message::Response & res){
         if(parameters_.find(req.parameter_name) != parameters_.end()){
             res.parameter = parameters_[req.parameter_name];
             return true;

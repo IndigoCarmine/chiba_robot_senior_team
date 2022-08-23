@@ -19,7 +19,7 @@ namespace actuators_transform_node {
             ros::Subscriber sub_;
             ros::Publisher can_tx_pub_;
         public:
-        void onInit(){
+        void onInit()override{
 
             nodehandle_ = getMTNodeHandle();
             can_tx_pub_ = nodehandle_.advertise<common_settings::topic::CanTx::Message>(common_settings::topic::CanTx::name, 1);
