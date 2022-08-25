@@ -48,5 +48,9 @@ struct TopicType{\
         aiming_mode = "aiming_mode"
     ;
 
+    enum class parameters:int{
+        leftstick_sensitivity
+    };
+
 
 } // namespace common_settings

@@ -18,7 +18,7 @@ namespace controller_node{
             ros::NodeHandle nh_;
         public:
         void onInit(){
-            nh_ = getMTNodeHandle();
+            nh_ = getNodeHandle();
             joy_sub_ = nh_.subscribe("joy", 1, &ControllerNode::joyCallback, this);
             twist_pub_ = nh_.advertise<common_settings::topic::JoystickParams::Message>(common_settings::topic::JoystickParams::name, 1);
             actuators_pub_ = nh_.advertise<std_msgs::Int32>("", 1);

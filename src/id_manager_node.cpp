@@ -42,7 +42,7 @@ namespace id_manager_node{
   };
 
   void IDManagerNode::onInit(){
-    nodehandle_ = getMTNodeHandle();
+    nodehandle_ = getNodeHandle();
 
     can_tx_pub_	= nodehandle_.advertise<common_settings::topic::CanTx::Message>(common_settings::topic::CanTx::name, 1);
     can_rx_sub_	= nodehandle_.subscribe<common_settings::topic::CanRx::Message>(common_settings::topic::CanRx::name, 1, &IDManagerNode::canRxCallback, this);
@@ -60,7 +60,6 @@ namespace id_manager_node{
     if(msg->id == 0x700){
       std_msgs::Int32 id_msg;
       id_msg.data = msg->data[0];
-      nodehandle_.setParam("id/"+ msg->id,id_msg.data);
     }
   }
   enum class ServiceRequestMessage{
