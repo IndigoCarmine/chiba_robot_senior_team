@@ -5,6 +5,8 @@
 #include <can_utils_rev.hpp>
 #include <can_plugins/Frame.h>
 #include "common_settings.hpp"
+using namespace common_settings;
+
 #include <vector>  
 
 namespace emergency_transform_node{
@@ -17,8 +19,8 @@ namespace emergency_transform_node{
         public:
             void onInit(){
                 nodehandle_ = getNodeHandle();
-                can_tx_pub_ = nodehandle_.advertise<common_settings::topic::CanTx::Message>(common_settings::topic::CanTx::name, 1);
-                sub_ = nodehandle_.subscribe<common_settings::topic::EmergencyCmd::Message>(common_settings::topic::EmergencyCmd::name, 1, &EmergencyTransformNode::callback, this);
+                can_tx_pub_ = nodehandle_.advertise<topic::CanTx::Message>(topic::CanTx::name, 1);
+                sub_ = nodehandle_.subscribe<topic::EmergencyCmd::Message>(topic::EmergencyCmd::name, 1, &EmergencyTransformNode::callback, this);
                 id_list_ = {0x00,0x01};
                 NODELET_INFO("EmergencyTransformNode is started.");  
                 NODELET_WARN("EmergencyTransformNode : id_list_ is not implemented yet");

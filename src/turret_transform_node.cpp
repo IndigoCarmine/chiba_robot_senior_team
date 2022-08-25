@@ -7,7 +7,6 @@
 #include <can_utils_rev.hpp>
 #include <can_plugins/Frame.h>
 #include <common_settings.hpp>
-using namespace common_settings;
 
 namespace turret_wheel_transform_node{
     
@@ -20,8 +19,8 @@ namespace turret_wheel_transform_node{
         public:
             void onInit(){
                 nodehandle_ = getNodeHandle();
-                can_tx_pub_ = nodehandle_.advertise<topic::CanTx::Message>(topic::CanTx::name, 1);
-                sub_ = nodehandle_.subscribe<topic::TurretWheelParams::Message>(topic::TurretWheelParams::name, 1, &TurretWheelTransformNode::callback, this);
+                can_tx_pub_ = nodehandle_.advertise<common_settings::topic::CanTx::Message>(common_settings::topic::CanTx::name, 1);
+                sub_ = nodehandle_.subscribe<common_settings::topic::TurretWheelParams::Message>(common_settings::topic::TurretWheelParams::name, 1, &TurretWheelTransformNode::callback, this);
 
                 //TODO: get id from parameter server, OR set right id. IT IS TEST PARAMETER.
                 id = 0x200;

@@ -5,7 +5,7 @@
 #include <can_utils_rev.hpp>
 #include <can_plugins/Frame.h>
 #include "common_settings.hpp"
-
+using namespace common_settings;
 
 namespace turret_wheel_control_node{
     class TurretWheelControlNode: public nodelet::Nodelet{
@@ -16,8 +16,8 @@ namespace turret_wheel_control_node{
         public:
             void onInit(){
                 nodehandle_ = getNodeHandle();
-                sub_ = nodehandle_.subscribe<common_settings::topic::JoystickParams::Message>(common_settings::topic::JoystickParams::name, 1, &TurretWheelControlNode::callback, this);
-                pub_ = nodehandle_.advertise<common_settings::topic::TurretWheelParams::Message>(common_settings::topic::TurretWheelParams::name, 1);
+                sub_ = nodehandle_.subscribe<topic::JoystickParams::Message>(topic::JoystickParams::name, 1, &TurretWheelControlNode::callback, this);
+                pub_ = nodehandle_.advertise<topic::TurretWheelParams::Message>(topic::TurretWheelParams::name, 1);
                 NODELET_INFO("TurretWheelControlNode is started.");
             }
             protected:
@@ -27,7 +27,7 @@ namespace turret_wheel_control_node{
                 //joystick message is sent as geometry_msgs::Twist.
                 //the right joystick is geometry_msgs::Twist.linear.x, geometry_msgs::Twist.linear.y
                 //the left joystick is geometry_msgs::Twist.angular.x, geometry_msgs::Twist.angular.y
-                if(data->header.frame_id == common_settings::aiming_mode){
+                if(data->header.frame_id == frame_id::aiming_mode){
                     pub_.publish(data->twist.angular);
                 }
 

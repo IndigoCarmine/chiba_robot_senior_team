@@ -8,6 +8,7 @@
 
 #include <can_utils_rev.hpp>
 #include "common_settings.hpp"
+using namespace common_settings;
 
 namespace status_transform_node{
     //The class is for transforming the status message from can message to ros message.
@@ -19,8 +20,8 @@ namespace status_transform_node{
         public:
             void onInit(){
                 nodehandle_ = getNodeHandle();
-                can_rx_sub_ = nodehandle_.subscribe<common_settings::topic::CanRx::Message>(common_settings::topic::CanRx::name, 1,&StatusTransformNode::callback, this);
-                pub_ = nodehandle_.advertise<common_settings::topic::StatusParams::Message>(common_settings::topic::StatusParams::name, 1);
+                can_rx_sub_ = nodehandle_.subscribe<topic::CanRx::Message>(topic::CanRx::name, 1,&StatusTransformNode::callback, this);
+                pub_ = nodehandle_.advertise<topic::StatusParams::Message>(topic::StatusParams::name, 1);
                 NODELET_INFO("StatusTransformNode is started.");
             }
             void callback(const can_plugins::Frame::ConstPtr &msg){

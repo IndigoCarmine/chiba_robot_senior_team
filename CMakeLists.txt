@@ -14,7 +14,6 @@ find_package(catkin REQUIRED COMPONENTS
   nodelet
   can_plugins
   message_generation
-  dynamic_reconfigure
 )
 
 ## System dependencies are found with CMake's conventions
@@ -92,9 +91,9 @@ generate_messages(
 ##     and list every .cfg file to be processed
 
 # Generate dynamic reconfigure parameters in the 'cfg' folder
-generate_dynamic_reconfigure_options(
-  cfg/Parameter.cfg
-)
+# generate_dynamic_reconfigure_options(
+#   cfg/Parameter.cfg
+# )
 
 ###################################
 ## catkin specific configuration ##
@@ -146,7 +145,7 @@ add_library(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(parameter_server src/parameter_server.cpp)
+# add_executable(parameter_server src/parameter_server.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -159,11 +158,11 @@ add_executable(parameter_server src/parameter_server.cpp)
 # add_dependencies()
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(
-  parameter_server
-  ${catkin_LIBRARIES}
+# target_link_libraries(
+#   parameter_server
+#   ${catkin_LIBRARIES}
 
-)
+# )
 
 #############
 ## Install ##
@@ -201,10 +200,9 @@ target_link_libraries(
 # )
 
 # Mark other files for installation (e.g. launch and bag files, etc.)
-install(FILES
-  settings.json
-  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-)
+# install(FILES
+#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+# )
 
 #############
 ## Testing ##

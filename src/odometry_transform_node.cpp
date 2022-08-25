@@ -5,6 +5,7 @@
 #include <can_utils_rev.hpp>
 #include <can_plugins/Frame.h>
 #include "common_settings.hpp"
+using namespace common_settings;
 
 namespace odometry_transform_node{
     class OdometryTransformNode : public nodelet::Nodelet{
@@ -17,8 +18,8 @@ namespace odometry_transform_node{
             void onInit(){
                 nodehandle_ = getNodeHandle();
                 
-                can_rx_sub_ = nodehandle_.subscribe<common_settings::topic::CanRx::Message>(common_settings::topic::CanRx::name, 1, &OdometryTransformNode::callback, this);
-                pub_ = nodehandle_.advertise<common_settings::topic::OdometryParams::Message>(common_settings::topic::OdometryParams::name, 1);
+                can_rx_sub_ = nodehandle_.subscribe<topic::CanRx::Message>(topic::CanRx::name, 1, &OdometryTransformNode::callback, this);
+                pub_ = nodehandle_.advertise<topic::OdometryParams::Message>(topic::OdometryParams::name, 1);
                 NODELET_INFO("OdometryTransformNode is started.");  
             }
         private:
