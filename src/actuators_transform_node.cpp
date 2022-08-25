@@ -1,16 +1,14 @@
 #include <ros/ros.h>
+#include <nodelet/nodelet.h>
+#include <pluginlib/class_list_macros.h>
 
 #include <can_utils_rev.hpp>
 
 #include <can_plugins/Frame.h>
 #include <geometry_msgs/Twist.h>
 
-#include <nodelet/nodelet.h>
-#include <pluginlib/class_list_macros.h>
-
 #include "common_settings.hpp"
-
-
+using namespace common_settings;
 
 namespace actuators_transform_node {
     class ActuatorsTransformNode : public nodelet::Nodelet{
@@ -20,13 +18,12 @@ namespace actuators_transform_node {
             ros::Publisher can_tx_pub_;
         public:
         void onInit()override{
-
             nodehandle_ = getNodeHandle();
-            can_tx_pub_ = nodehandle_.advertise<common_settings::topic::CanTx::Message>(common_settings::topic::CanTx::name, 1);
-            sub_ = nodehandle_.subscribe<common_settings::topic::TurretWheelParams::Message>(common_settings::topic::TurretWheelParams::name, 1, &ActuatorsTransformNode::callback, this);
+            can_tx_pub_ = nodehandle_.advertise<topic::CanTx::Message>(topic::CanTx::name, 1);
+            sub_ = nodehandle_.subscribe<topic::TurretWheelParams::Message>(topic::TurretWheelParams::name, 1, &ActuatorsTransformNode::callback, this);
         }
         protected:
-        void callback(const geometry_msgs::Vector3::ConstPtr &data){
+        void callback(const topic::TurretWheelParams::Message::ConstPtr &data){
             //TODO
             NODELET_WARN("actuaters_transform_node::actuatersCallback is not implemented yet");
             

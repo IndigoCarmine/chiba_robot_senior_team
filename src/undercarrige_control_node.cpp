@@ -6,8 +6,8 @@
 #include <geometry_msgs/TwistStamped.h>
 #include <geometry_msgs/Twist.h>
 #include "common_settings.hpp"
-
 using namespace common_settings;
+
 namespace undercarrige_control_node{
     //the class is a node to calculate undercarrige speed from two joystick.
     //joystick message is sent as geometry_msgs::Twist.
@@ -46,14 +46,14 @@ namespace undercarrige_control_node{
             //the right joystick is geometry_msgs::Twist.linear.x, geometry_msgs::Twist.linear.y
             //the left joystick is geometry_msgs::Twist.angular.x, geometry_msgs::Twist.angular.y
             void callback(const topic::JoystickParams::Message::ConstPtr &data){
-                if(data->header.frame_id ==normal_mode){
+                if(data->header.frame_id ==frame_id::normal_mode){
                     geometry_msgs::Twist output;
 
                     output.linear.x = data->twist.linear.x;
                     output.linear.y = data->twist.linear.y + data->twist.angular.y * leftstick_sensitivity_;
                     output.angular.z = data->twist.angular.x;
                     pub_.publish(output);
-                }else if(data->header.frame_id ==aiming_mode){
+                }else if(data->header.frame_id ==frame_id::aiming_mode){
                     geometry_msgs::Twist output;
                     output.linear.x = data->twist.linear.x;
                     output.linear.y = data->twist.linear.y;

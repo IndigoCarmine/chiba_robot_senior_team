@@ -8,7 +8,7 @@
 
 #include <can_utils_rev.hpp>
 #include "common_settings.hpp"
-
+using namespace common_settings;
 
 namespace undercarrige_transform_node{
 
@@ -47,8 +47,8 @@ namespace undercarrige_transform_node{
         public:
             void onInit(){
                 nodehandle_ = getNodeHandle();
-                sub_ = nodehandle_.subscribe<common_settings::topic::UndercarriageParams::Message>(common_settings::topic::UndercarriageParams::name, 1, &UndercarrigeTransformNode::callback, this);
-                can_tx_pub_ = nodehandle_.advertise<common_settings::topic::CanTx::Message>(common_settings::topic::CanTx::name, 1);
+                sub_ = nodehandle_.subscribe<topic::UndercarriageParams::Message>(topic::UndercarriageParams::name, 1, &UndercarrigeTransformNode::callback, this);
+                can_tx_pub_ = nodehandle_.advertise<topic::CanTx::Message>(topic::CanTx::name, 1);
                 NODELET_INFO("UndercarrigeTransformNode is started.");
             }
         private:
