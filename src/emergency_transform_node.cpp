@@ -16,7 +16,7 @@ namespace emergency_transform_node{
             std::vector<uint16_t> id_list_;
         public:
             void onInit(){
-                nodehandle_ = getMTNodeHandle();
+                nodehandle_ = getNodeHandle();
                 can_tx_pub_ = nodehandle_.advertise<common_settings::topic::CanTx::Message>(common_settings::topic::CanTx::name, 1);
                 sub_ = nodehandle_.subscribe<common_settings::topic::EmergencyCmd::Message>(common_settings::topic::EmergencyCmd::name, 1, &EmergencyTransformNode::callback, this);
                 id_list_ = {0x00,0x01};

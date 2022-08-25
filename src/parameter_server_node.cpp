@@ -4,13 +4,7 @@
 #include <common_settings.hpp>
 using namespace common_settings::topic;
 
-#include <iostream>
-#include <string>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
-#include <boost/foreach.hpp>
-#include <boost/optional.hpp>
-using namespace boost::property_tree;
+
 
 namespace parameter_server_node{
     //it is like dynamic reconfigure on nodelet
@@ -32,35 +26,19 @@ namespace parameter_server_node{
 
         public:
             void onInit()override{
-                
                 nodehandle_ = getNodeHandle();
-                sub_= nodehandle_.subscribe<SetParameter::Message>(SetParameter::name, 1, &ParameterServerNode::callback, this);
-                service_server_ = nodehandle_.advertiseService(SetParameter::name, &ParameterServerNode::service_callback, this);
-                pub_ = nodehandle_.advertise<ParameterChangeNotify::Message>(ParameterChangeNotify::name, 1);
-                
-                //inport setting json
-                NODELET_WARN("ParameterServerNode is reading json");
-                ptree ptree_;
-                read_json("settings.json",ptree_);
-                // Data.info
-                // std::string buffer;
-                // BOOST_FOREACH (const ptree::value_type& child, ptree_.get_child("info")) {
-                //     const ptree& info = child.second;
 
-                //     // Data.info.id
-                //     if (boost::optional<std::string> id = info.get_optional<std::string>("parameter_name")) {
-                //         buffer = id.get();
-                //     }
+                sub_= nodehandle_.subscribe<common_settings::topic::SetParameter::Message>(common_settings::topic::SetParameter::name, 1, &ParameterServerNode::callback, this);
+                service_server_ = nodehandle_.advertiseService(common_settings::topic::SetParameter::name, &ParameterServerNode::service_callback, this);
+                pub_ = nodehandle_.advertise<common_settings::topic::ParameterChangeNotify::Message>(common_settings::topic::ParameterChangeNotify::name, 1);
 
-                //     // Data.info.name
-                //     if (boost::optional<double> name = info.get_optional<double>("parameter")) {
-                //         parameters_[buffer] = name.get();
-                //     }
-                // }
-                //inport setting json END
+                if(nodehandle_.hasParam("settings")){
+                    nodehandle_.getParam("settings",parameters_);
+                }else{
+                    NODELET_WARN("ParameterServerNode: settings is not exist.");
+                }       
 
-
-                NODELET_WARN("ParameterServerNode is started");
+                NODELET_INFO("ParameterServerNode is started.");
             }
 
     };
@@ -73,8 +51,8 @@ namespace parameter_server_node{
         }
         //set parameter and notify
         if(parameters_.find(msg->parameter_name) !=parameters_.end() || parameters_[msg->parameter_name] == msg->parameter ){
+            //set parameter
             parameters_[msg->parameter_name] = msg->parameter;
-            ParameterChangeNotify::Message notify_msg;
             notify_msg.parameter_name = msg->parameter_name;
             notify_msg.parameter = msg->parameter;
             pub_.publish(notify_msg);
@@ -88,6 +66,8 @@ namespace parameter_server_node{
             res.parameter = parameters_[req.parameter_name];
             return true;
         }else{
+            parameters_[req.parameter_name] = 0;
+            NODELET_WARN("ParameterServerNode: invalid request coming");
             return false;
         }
     }

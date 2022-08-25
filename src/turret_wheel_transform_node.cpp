@@ -18,7 +18,7 @@ namespace turret_wheel_transform_node{
             uint16_t id;
         public:
             void onInit(){
-                nodehandle_ = getMTNodeHandle();
+                nodehandle_ = getNodeHandle();
                 can_tx_pub_ = nodehandle_.advertise<common_settings::topic::CanTx::Message>(common_settings::topic::CanTx::name, 1);
                 sub_ = nodehandle_.subscribe<common_settings::topic::TurretWheelParams::Message>(common_settings::topic::TurretWheelParams::name, 1, &TurretWheelTransformNode::callback, this);
 

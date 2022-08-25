@@ -46,7 +46,7 @@ namespace undercarrige_transform_node{
             ros::Publisher can_tx_pub_;
         public:
             void onInit(){
-                nodehandle_ = getMTNodeHandle();
+                nodehandle_ = getNodeHandle();
                 sub_ = nodehandle_.subscribe<common_settings::topic::UndercarriageParams::Message>(common_settings::topic::UndercarriageParams::name, 1, &UndercarrigeTransformNode::callback, this);
                 can_tx_pub_ = nodehandle_.advertise<common_settings::topic::CanTx::Message>(common_settings::topic::CanTx::name, 1);
                 NODELET_INFO("UndercarrigeTransformNode is started.");

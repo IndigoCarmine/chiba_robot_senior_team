@@ -1,7 +1,9 @@
 <launch>
     <arg name="manager_name" default="nodelet_manager" />
     <arg name="manager_threads" default="4" />
-
+      <launch>
+      <rosparam command="load" file="$(find package_name)/config.yaml" />
+      </launch>
     <node pkg="nodelet" type="nodelet" name="$(arg manager_name)" args="manager" output="screen">
           <param name="num_worker_threads" value="$(arg manager_threads)" />
     </node>

@@ -5,8 +5,8 @@
       <node pkg="nodelet" type="nodelet" name="$(arg manager_name)" args="manager" output="screen">
             <param name="num_worker_threads" value="$(arg manager_threads)" />
       </node>
-      
       <node pkg="nodelet" type="nodelet" name="node_loader0"
             args="load chiba_robot_senior_team/parameter_server_node $(arg manager_name)" >
       </node>
+
 </launch>
