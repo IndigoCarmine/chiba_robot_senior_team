@@ -2,6 +2,8 @@
 #include <nodelet/nodelet.h>
 #include <pluginlib/class_list_macros.h>
 #include <common_settings.hpp>
+using namespace common_settings::topic;
+
 
 
 namespace parameter_server_node{
@@ -19,12 +21,13 @@ namespace parameter_server_node{
             ros::ServiceServer service_server_;
             std::map<std::string, double> parameters_;
         public:
-            void callback(const common_settings::topic::SetParameter::Message::ConstPtr & msg);
-            bool service_callback(common_settings::topic::GetParameter::Message::Request & req, common_settings::topic::GetParameter::Message::Response & res);
+            void callback(const SetParameter::Message::ConstPtr & msg);
+            bool service_callback(GetParameter::Message::Request & req, GetParameter::Message::Response & res);
 
         public:
             void onInit()override{
                 nodehandle_ = getNodeHandle();
+
                 sub_= nodehandle_.subscribe<common_settings::topic::SetParameter::Message>(common_settings::topic::SetParameter::name, 1, &ParameterServerNode::callback, this);
                 service_server_ = nodehandle_.advertiseService(common_settings::topic::SetParameter::name, &ParameterServerNode::service_callback, this);
                 pub_ = nodehandle_.advertise<common_settings::topic::ParameterChangeNotify::Message>(common_settings::topic::ParameterChangeNotify::name, 1);
@@ -40,7 +43,7 @@ namespace parameter_server_node{
 
     };
 
-    void ParameterServerNode::callback(const common_settings::topic::SetParameter::Message::ConstPtr & msg){
+    void ParameterServerNode::callback(const SetParameter::Message::ConstPtr & msg){
         //check vailidity of message
         if(msg->parameter_name == ""){
             NODELET_WARN("ParameterServerNode: parameter_name is empty");
@@ -50,9 +53,6 @@ namespace parameter_server_node{
         if(parameters_.find(msg->parameter_name) !=parameters_.end() || parameters_[msg->parameter_name] == msg->parameter ){
             //set parameter
             parameters_[msg->parameter_name] = msg->parameter;
-
-            //notify the change
-            common_settings::topic::ParameterChangeNotify::Message notify_msg;
             notify_msg.parameter_name = msg->parameter_name;
             notify_msg.parameter = msg->parameter;
             pub_.publish(notify_msg);
@@ -61,7 +61,7 @@ namespace parameter_server_node{
         }
     }
 
-    bool ParameterServerNode::service_callback(common_settings::topic::GetParameter::Message::Request & req, common_settings::topic::GetParameter::Message::Response & res){
+    bool ParameterServerNode::service_callback(GetParameter::Message::Request & req, GetParameter::Message::Response & res){
         if(parameters_.find(req.parameter_name) != parameters_.end()){
             res.parameter = parameters_[req.parameter_name];
             return true;

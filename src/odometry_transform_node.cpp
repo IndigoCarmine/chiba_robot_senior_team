@@ -13,8 +13,10 @@ namespace odometry_transform_node{
             ros::Subscriber can_rx_sub_;
             ros::Publisher pub_;
         public:
+
             void onInit(){
                 nodehandle_ = getNodeHandle();
+                
                 can_rx_sub_ = nodehandle_.subscribe<common_settings::topic::CanRx::Message>(common_settings::topic::CanRx::name, 1, &OdometryTransformNode::callback, this);
                 pub_ = nodehandle_.advertise<common_settings::topic::OdometryParams::Message>(common_settings::topic::OdometryParams::name, 1);
                 NODELET_INFO("OdometryTransformNode is started.");  
