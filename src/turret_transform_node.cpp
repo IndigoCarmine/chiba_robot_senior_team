@@ -2,7 +2,6 @@
 #include <ros/ros.h>
 #include <nodelet/nodelet.h>
 #include <pluginlib/class_list_macros.h>
-#include <can_plugins/Frame.h>
 #include <geometry_msgs/Vector3.h>
 #include <can_utils_rev.hpp>
 #include <can_plugins/Frame.h>
