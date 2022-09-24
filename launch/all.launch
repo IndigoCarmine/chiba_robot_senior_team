@@ -6,6 +6,11 @@
     <node pkg="nodelet" type="nodelet" name="$(arg manager_name)" args="manager" output="screen">
           <param name="num_worker_threads" value="$(arg manager_threads)" />
     </node>
+    
+    <node pkg="nodelet" type="nodelet" name="slcan_bridge" 
+  args="load can_plugins/SlcanBridge $(arg manager_name)" output="screen"/>
+
+
     <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch" > 
           <arg name="port" value="8080"/>
     </include>

@@ -33,7 +33,7 @@ namespace turret_wheel_transform_node{
             protected:
             void callback(const geometry_msgs::Vector3::ConstPtr &data){
                 //it uses degrees. if shirasu uses radians, it should be converted to radians.
-                NODELET_WARN("turrelwheel_transform_node: Use degre method.");
+                NODELET_WARN("turrelwheel_transform_node: Use degree method.");
 
                 if(data->x !=0||data->y !=0){
                     //transform vector3 to degrees. and y axis is 0.

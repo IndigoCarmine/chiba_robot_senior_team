@@ -19,7 +19,7 @@ namespace turret_wheel_transform_node{
             void onInit(){
                 nodehandle_ = getNodeHandle();
                 can_tx_pub_ = nodehandle_.advertise<common_settings::topic::CanTx::Message>(common_settings::topic::CanTx::name, 1);
-                sub_ = nodehandle_.subscribe<common_settings::topic::TurretWheelParams::Message>(common_settings::topic::TurretWheelParams::name, 1, &TurretWheelTransformNode::callback, this);
+                sub_ = nodehandle_.subscribe<common_settings::topic::ElevationAngle::Message>(common_settings::topic::ElevationAngle::name, 1, &TurretWheelTransformNode::callback, this);
 
                 //TODO: get id from parameter server, OR set right id. IT IS TEST PARAMETER.
                 id = 0x200;
@@ -29,9 +29,9 @@ namespace turret_wheel_transform_node{
             }
 
             protected:
-            void callback(const geometry_msgs::Vector3::ConstPtr &data){
+            void callback(const common_settings::topic::ElevationAngle::Message::ConstPtr &data){
                 //it uses degrees. if shirasu uses radians, it should be converted to radians.
-                NODELET_WARN("turrelwheel_transform_node: Use degre method.");
+                NODELET_WARN("turrelwheel_transform_node: Use degree method.");
 
                 if(data->x !=0||data->y !=0){
                     //transform vector3 to degrees. and y axis is 0.
