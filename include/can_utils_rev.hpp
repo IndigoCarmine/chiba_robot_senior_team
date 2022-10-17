@@ -14,6 +14,7 @@ namespace can_utils{
   static_assert(std::is_same<uint8_t, unsigned char>::value, "This code is assuming that uint8_t is unsigned char.");
 
   //This function is used to extract the data from the can message.
+  //Don't use this function directly. Use makeFrame.
   template <typename T>
   inline can_plugins::Frame::_data_type pack(const T data)
   {
@@ -33,7 +34,6 @@ namespace can_utils{
   }
 
   //This function is used to pack the data into the can message.
-  //Don't use this function directly. Use makeFrame.
   template<typename T>
   inline T unpack(can_plugins::Frame::_data_type buffer)
   {

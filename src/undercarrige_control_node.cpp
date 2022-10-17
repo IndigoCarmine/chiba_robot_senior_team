@@ -17,9 +17,11 @@ namespace undercarrige_control_node{
     class UndercarrigeControlNode: public nodelet::Nodelet {
         private:
             ros::NodeHandle nodehandle_;
-            ros::Subscriber sub_;
+            ros::Subscriber joystick_sub_;
+            ros::Subscriber odometry_sub_;
             ros::Publisher pub_;
             int leftstick_sensitivity_ = 10;
+
 
             //for parameter_server
             ros::ServiceClient service_client_;
@@ -27,10 +29,13 @@ namespace undercarrige_control_node{
         public:
             void onInit(){
                 nodehandle_ = getNodeHandle();
-                sub_ = nodehandle_.subscribe<topic::JoystickParams::Message>(topic::JoystickParams::name, 1, &UndercarrigeControlNode::callback, this);
+                joystick_sub_ = nodehandle_.subscribe<topic::JoystickParams::Message>(topic::JoystickParams::name, 1, &UndercarrigeControlNode::joystickCallback, this);
                 pub_ = nodehandle_.advertise<topic::UndercarriageParams::Message>(topic::UndercarriageParams::name, 1);
                 service_client_ = nodehandle_.serviceClient<topic::GetParameter::Message>(topic::GetParameter::name);
                 notify_sub_ = nodehandle_.subscribe(topic::ParameterChangeNotify::name,10,&UndercarrigeControlNode::changeParameter,this);
+                odometry_sub_ = nodehandle_.subscribe(topic::OdometryParams::name,10,&UndercarrigeControlNode::odometryCallback,this);
+
+                
                 NODELET_INFO("UndercarrigeControlNode is started.");
             }
 
@@ -45,7 +50,7 @@ namespace undercarrige_control_node{
             //joystick message is sent as geometry_msgs::Twist.
             //the right joystick is geometry_msgs::Twist.linear.x, geometry_msgs::Twist.linear.y
             //the left joystick is geometry_msgs::Twist.angular.x, geometry_msgs::Twist.angular.y
-            void callback(const topic::JoystickParams::Message::ConstPtr &data){
+            void joystickCallback(const topic::JoystickParams::Message::ConstPtr &data){
                 if(data->header.frame_id ==frame_id::normal_mode){
                     geometry_msgs::Twist output;
 
@@ -61,6 +66,10 @@ namespace undercarrige_control_node{
                 }else{
                     NODELET_WARN("UndercarrigeControlNode::  get wrong frame_id");
                 }
+            }
+
+
+            void odometryCallback(const topic::OdometryParams::Message::ConstPtr &data){
             }
     };
 

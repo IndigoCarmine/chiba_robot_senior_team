@@ -26,8 +26,8 @@ namespace undercarrige_transform_node{
                 direction):id(id),distance(distance),direction(direction){}
 
             //Calcuate motor speed
-            double calcutateSpeed(const std::array<double,2> &linear, const std::array<double,2> &angular){
-                return linear_rate * std::inner_product(linear.begin(), linear.end(), direction.begin(), 0.0) + angular_rate* std::inner_product(angular.begin(), angular.end(), direction.begin(), 0.0);
+            double calcutateSpeed(const std::array<double,2> &linear, const double angular){
+                return linear_rate * std::inner_product(linear.begin(), linear.end(), direction.begin(), 0.0) + angular_rate* angular;
             }
     };
     
@@ -57,7 +57,8 @@ namespace undercarrige_transform_node{
 
                 //Calculate the speed of each motor and publish the can frame.
                 for(unsigned int i = 0; i < moters.size(); i++){
-                    can_plugins::Frame frame = can_utils::makeFrame(moters[i].id, moters[i].calcutateSpeed({data->linear.x, data->linear.y}, {data->angular.x, data->angular.y}));
+                    int a = moters[i].calcutateSpeed({data->linear.x, data->linear.y}, data->angular.z);
+                    can_plugins::Frame frame = can_utils::makeFrame(moters[i].id, a);
                     can_tx_pub_.publish(frame);
                 }
                 
