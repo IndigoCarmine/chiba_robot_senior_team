@@ -18,18 +18,6 @@ namespace actuators_transform_node {
             ros::Publisher can_tx_pub_;
         public:
         void onInit()override{
-            nodehandle_ = getNodeHandle();
-            can_tx_pub_ = nodehandle_.advertise<topic::CanTx::Message>(topic::CanTx::name, 1);
-            sub_ = nodehandle_.subscribe<topic::TurretWheelParams::Message>(topic::TurretWheelParams::name, 1, &ActuatorsTransformNode::callback, this);
-        }
-        protected:
-        void callback(const topic::TurretWheelParams::Message::ConstPtr &data){
-            //TODO
-            NODELET_WARN("actuaters_transform_node::actuatersCallback is not implemented yet");
-            
-            can_plugins::Frame frame;
-            can_tx_pub_.publish(frame);
-
         }
     };
 } // namespace undercarrige_transform_node

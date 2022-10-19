@@ -34,6 +34,10 @@ namespace controller_node{
             if(msg->buttons[2] == 1){
                 joy_frame_id_ = frame_id::normal_mode;
             }
+            //if push y button, change the frame_id to auto_mode
+            if(msg->buttons[3] == 1){
+                joy_frame_id_ = frame_id::auto_mode;
+            }
             
             //publish joy_params to undercarriage control and 
             //the right joystick is geometry_msgs::Twist.linear.x, geometry_msgs::Twist.linear.y

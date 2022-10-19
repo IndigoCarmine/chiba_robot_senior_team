@@ -1,0 +1,6 @@
+float64 evaluation_angle
+float64 speed_upper
+float64 speed_lower
+float64 speed_left
+float64 speed_right
+bool shoot

@@ -34,8 +34,6 @@ namespace undercarrige_control_node{
                 service_client_ = nodehandle_.serviceClient<topic::GetParameter::Message>(topic::GetParameter::name);
                 notify_sub_ = nodehandle_.subscribe(topic::ParameterChangeNotify::name,10,&UndercarrigeControlNode::changeParameter,this);
                 odometry_sub_ = nodehandle_.subscribe(topic::OdometryParams::name,10,&UndercarrigeControlNode::odometryCallback,this);
-
-                
                 NODELET_INFO("UndercarrigeControlNode is started.");
             }
 

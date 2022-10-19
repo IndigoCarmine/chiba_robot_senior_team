@@ -54,6 +54,7 @@ add_message_files(
   FILES
   IDNotice.msg
   ParameterNotice.msg
+  Turret.msg
 )
 
 # Generate services in the 'srv' folder
@@ -131,8 +132,8 @@ add_library(
   src/id_manager_node.cpp
   src/odometry_transform_node.cpp
   src/status_transform_node.cpp
-  src/turret_wheel_transform_node.cpp
-  src/turret_wheel_control_node.cpp
+  src/turret_transform_node.cpp
+  src/turret_control_node.cpp
   src/undercarrige_transform_node.cpp
   src/undercarrige_control_node.cpp
  )

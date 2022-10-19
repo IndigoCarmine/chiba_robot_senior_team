@@ -14,28 +14,31 @@ namespace turret_transform_node{
             ros::NodeHandle nodehandle_;
             ros::Subscriber sub_;
             ros::Publisher can_tx_pub_;
-            uint16_t id;
-            int angle = 0;
-            float sensitivity = 1.0;
+            uint16_t evaluation_angle_id_;
+            uint16_t speed_upper_id = 0x000;
+            uint16_t speed_lower_id = 0x000;
+            uint16_t speed_left_id  = 0x000;
+            uint16_t speed_right_id = 0x000;
         public:
             void onInit(){
                 nodehandle_ = getNodeHandle();
                 can_tx_pub_ = nodehandle_.advertise<common_settings::topic::CanTx::Message>(common_settings::topic::CanTx::name, 1);
-                sub_ = nodehandle_.subscribe<common_settings::topic::ElevationAngle::Message>(common_settings::topic::ElevationAngle::name, 1, &TurretTransformNode::callback, this);
-
+                sub_ = nodehandle_.subscribe<common_settings::topic::TurretParams::Message>(common_settings::topic::TurretParams::name, 1, &TurretTransformNode::callback, this);
                 //TODO: get id from parameter server, OR set right id. IT IS TEST PARAMETER.
-                id = 0x200;
 
                 NODELET_INFO("TurretWheelTransformNode is initialized");
+                
                 NODELET_WARN("TurretWheelTransformNode : id is not implemented yet");
             }
 
             protected:
-            void callback(const common_settings::topic::ElevationAngle::Message::ConstPtr &data){
-                //it uses degrees. if shirasu uses radians, it should be converted to radians.
-                NODELET_WARN("turrelwheel_transform_node: Use degree method.");
-                angle += data->data * sensitivity;
-                can_tx_pub_.publish(can_utils::makeFrame(id,angle));
+            void callback(const common_settings::topic::TurretParams::Message::ConstPtr &data){
+                //make can frame and publish it.
+                can_tx_pub_.publish(can_utils::makeFrame(evaluation_angle_id_, data->evaluation_angle));
+                can_tx_pub_.publish(can_utils::makeFrame(speed_upper_id, data->speed_upper));
+                can_tx_pub_.publish(can_utils::makeFrame(speed_lower_id, data->speed_lower));
+                can_tx_pub_.publish(can_utils::makeFrame(speed_left_id, data->speed_left));
+                can_tx_pub_.publish(can_utils::makeFrame(speed_right_id, data->speed_right));   
             }
     };
 
