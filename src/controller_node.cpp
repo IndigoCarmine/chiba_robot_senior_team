@@ -27,11 +27,11 @@ namespace controller_node{
 
         void joyCallback(const sensor_msgs::Joy::ConstPtr& msg){
             //if push a button, change the frame_id to aiming_mode
-            if(msg->buttons[1] == 1){
+            if(msg->buttons[0] == 1){
                 joy_frame_id_ = frame_id::aiming_mode;
             }
             //if push b button, change the frame_id to normal_mode
-            if(msg->buttons[2] == 1){
+            if(msg->buttons[1] == 1){
                 joy_frame_id_ = frame_id::normal_mode;
             }
             //if push y button, change the frame_id to auto_mode
@@ -39,15 +39,16 @@ namespace controller_node{
                 joy_frame_id_ = frame_id::auto_mode;
             }
             
+            
             //publish joy_params to undercarriage control and 
             //the right joystick is geometry_msgs::Twist.linear.x, geometry_msgs::Twist.linear.y
             //the left joystick is geometry_msgs::Twist.angular.x, geometry_msgs::Twist.angular.y
             topic::JoystickParams::Message twiststmped;
             twiststmped.header.frame_id = joy_frame_id_;
-            twiststmped.twist.linear.x = msg->axes[0];
-            twiststmped.twist.linear.y = msg->axes[1];
-            twiststmped.twist.angular.x= msg->axes[2];
-            twiststmped.twist.angular.y= msg->axes[3];
+            twiststmped.twist.linear.x = msg->axes[3];
+            twiststmped.twist.linear.y = msg->axes[4];
+            twiststmped.twist.angular.x= msg->axes[0];
+            twiststmped.twist.angular.y= msg->axes[1];
             twist_pub_.publish(twiststmped);
 
             //publish button message

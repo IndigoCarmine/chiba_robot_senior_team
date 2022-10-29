@@ -1,6 +1,6 @@
-float64 evaluation_angle
-float64 speed_upper
-float64 speed_lower
-float64 speed_left
-float64 speed_right
+uint8 evaluation_angle
+uint8 speed_upper
+uint8 speed_lower
+uint8 speed_left
+uint8 speed_right
 bool shoot

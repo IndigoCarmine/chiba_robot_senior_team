@@ -67,10 +67,7 @@ namespace id_manager_node{
     NODELET_WARN("I don't know what to do with this message. Sorry.");
     NODELET_WARN("You should write canRxCallback in IDManagerNode.");
     //if the data is a id response, set the id to the dictionary
-    if(msg->id == 0x700){
-      std_msgs::Int32 id_msg;
-      id_msg.data = msg->data[0];
-    }
+
   }
   enum class ServiceRequestMessage{
     UpdateAllID,

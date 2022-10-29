@@ -52,14 +52,14 @@ namespace undercarrige_control_node{
                 if(data->header.frame_id ==frame_id::normal_mode){
                     geometry_msgs::Twist output;
 
-                    output.linear.x = data->twist.linear.x;
-                    output.linear.y = data->twist.linear.y + data->twist.angular.y * leftstick_sensitivity_;
-                    output.angular.z = data->twist.angular.x;
+                    output.linear.x = data->twist.angular.x;
+                    output.linear.y = data->twist.angular.y + data->twist.linear.y * leftstick_sensitivity_;
+                    output.angular.z = data->twist.linear.x;
                     pub_.publish(output);
                 }else if(data->header.frame_id ==frame_id::aiming_mode){
                     geometry_msgs::Twist output;
-                    output.linear.x = data->twist.linear.x;
-                    output.linear.y = data->twist.linear.y;
+                    output.linear.x = data->twist.angular.x;
+                    output.linear.y = data->twist.angular.y;
                     pub_.publish(output);
                 }else{
                     NODELET_WARN("UndercarrigeControlNode::  get wrong frame_id");

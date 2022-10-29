@@ -28,7 +28,7 @@ namespace turret_control_node{
 
                 NODELET_INFO("TurretControlNode is initialized");
                 NODELET_WARN("TurretControlNode : id is not implemented yet");
-                NODELET_WARN("TurretControlNode :  not implemented yet");
+                NODELET_WARN("TurretControlNode :  We should set limitation of evaluation angle"); 
             }
 
             protected:
@@ -38,18 +38,36 @@ namespace turret_control_node{
                 //if it is not auto mode, all speed is same.
                 if(data->header.frame_id == common_settings::frame_id::auto_mode){    
 
-                }else{
-                    //manual mode
+                }else if(data->header.frame_id == common_settings::frame_id::aiming_mode){
+                    //aiming mode
                     //integrate evaluation angle
-
+                    evaluation_angle_ += data->twist.linear.y;
+                    //limit evaluation angle
+                    if(evaluation_angle_ > 90){
+                        evaluation_angle_ = 90;
+                    }else if(evaluation_angle_ < 0){
+                        evaluation_angle_ = 0;
+                    }
+                    //set speed
+                    speed_ += data->twist.linear.x;
+                    //limit speed in 0 to 243
+                    if(speed_ > 244){
+                        speed_ = 244;
+                    }else if(speed_ < 0){
+                        speed_ = 0;
+                    }
                     //make Trret Message and publish it.
-                    
                     common_settings::topic::TurretParams::Message msg;
-                    msg.evaluation_angle = 
+                    msg.evaluation_angle  = evaluation_angle_;
+                    msg.speed_upper = speed_;
+                    msg.speed_lower = speed_;
+                    msg.speed_left  = speed_;
+                    msg.speed_right = speed_;
+                    turret_pub.publish(msg);
                 }
-
-                
             }
+
+
     };
 
 }//namespace turret_transform_node

@@ -9,11 +9,13 @@ add_compile_options(-std=c++14 -pedantic-errors -Wall -Wextra -O3)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  rospy
   std_msgs
   pluginlib
   nodelet
   can_plugins
   message_generation
+  geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -55,6 +57,8 @@ add_message_files(
   IDNotice.msg
   ParameterNotice.msg
   Turret.msg
+  SensorParameter.msg
+  Work.msg
 )
 
 # Generate services in the 'srv' folder
@@ -62,19 +66,22 @@ add_service_files(
   FILES
   ParameterService.srv
   IDService.srv
+  Saver.srv
 )
 
-## Generate actions in the 'action' folder
+# # Generate actions in the 'action' folder
 # add_action_files(
 #   FILES
-#   Action1.action
-#   Action2.action
+#   CollectWork.action
+#   MoveWork.action
+#   ShotWork.action
 # )
 
 # Generate added messages and services with any dependencies listed here
 generate_messages(
   DEPENDENCIES
   std_msgs  # Or other packages containing msgs
+  geometry_msgs
 )
 
 ################################################
@@ -136,6 +143,11 @@ add_library(
   src/turret_control_node.cpp
   src/undercarrige_transform_node.cpp
   src/undercarrige_control_node.cpp
+  src/parameter_server_node.cpp
+  src/auto/work_conductor_node.cpp
+  src/auto/collect_work_node.cpp
+  src/auto/move_work_node.cpp
+  src/auto/shot_work_node.cpp
  )
 
 ## Add cmake target dependencies of the library

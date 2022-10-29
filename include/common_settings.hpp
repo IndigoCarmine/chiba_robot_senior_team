@@ -8,10 +8,12 @@
 #include <std_msgs/Bool.h>
 #include <std_msgs/Float64.h>
 #include <chiba_robot_senior_team/IDNotice.h>
-#include <chiba_robot_senior_team/ParameterService.h>
 #include <chiba_robot_senior_team/ParameterNotice.h>
+#include <chiba_robot_senior_team/ParameterService.h>
 #include <chiba_robot_senior_team/IDService.h>
 #include <chiba_robot_senior_team/Turret.h>
+#include <chiba_robot_senior_team/SensorParameter.h>
+#include <chiba_robot_senior_team/Work.h>
 namespace common_settings{
 
 #define CHIBAROBO_deine_topic(TopicType, topic_name, MessageType)\
@@ -35,6 +37,8 @@ struct TopicType{\
         CHIBAROBO_deine_topic(UnitPositionParams, unit_position_params, geometry_msgs::Vector3);// from OdometryCalculateNode to ??  it means a position of the body.
         CHIBAROBO_deine_topic(EmergencyCmd, emergency_cmd, std_msgs::Bool);//from ?? to EmergencyTransformNode. it means a emergency cmd and restary cmd.( it may become other type.)
         CHIBAROBO_deine_topic(UnitPositionReset, unit_position_reset, std_msgs::Bool); // from ?? to OdometryCalculateNode. it means a reset cmd of the position of the body.
+        CHIBAROBO_deine_topic(SensorParams, sensor_params, chiba_robot_senior_team::SensorParameter);// from SensorTransformNode to SensorCaluculateNode. it means a value of sensor.
+        CHIBAROBO_deine_topic(Work, work, chiba_robot_senior_team::Work);// from WorkConductorNode to ??. it means a work.
         //parameter_server
         CHIBAROBO_deine_topic(SetParameter,set_parameter, chiba_robot_senior_team::ParameterNotice);//from ?? to ParameterServerNode. it can set or change parameter.
         CHIBAROBO_deine_topic(ParameterChangeNotify, parameter_change_notify, chiba_robot_senior_team::ParameterNotice);// from ParameterServerNode to ??. it can notify that parameter is changed.
